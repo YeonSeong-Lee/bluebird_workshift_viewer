@@ -17,7 +17,10 @@ export class WorkShiftView {
         container.innerHTML = `
             <table>
                 <tr>
-                    <th colspan="2" id="header">${today} 근무표</th>
+                    <th colspan="2" id="header">
+                        ${today} 근무표
+                        <button id="open-settings" class="settings-button">⚙️</button>
+                    </th>
                 </tr>
                 <tr>
                     <td colspan="2">
@@ -29,6 +32,7 @@ export class WorkShiftView {
                 </tr>
                 ${this.renderWorkersList(workers)}
             </table>
+            ${this.renderSettingsModal()}
         `;
         return container;
     }
@@ -75,5 +79,28 @@ export class WorkShiftView {
             </table>
         `;
         return container;
+    }
+
+    renderSettingsModal() {
+        return `
+            <div id="settings-modal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>설정</h2>
+                        <span id="close-settings" class="close">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="settings-item">
+                            <label>엑셀 파일 경로</label>
+                            <div class="file-path-container">
+                                <input type="text" id="excel-path" readonly 
+                                    value="${localStorage.getItem('EXCEL_FILE_PATH') || ''}">
+                                <button id="change-excel">변경</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 }

@@ -74,21 +74,34 @@ export class WorkShiftController {
     }
 
     setupEventListeners() {
-        this.component.shadowRoot.addEventListener('change', async (event) => {
-            if (event.target.id === 'date-input') {
-                this.currentDate = event.target.value;
-                await this.updateView(this.currentDate);
-            }
-        });
-
         this.component.shadowRoot.addEventListener('click', async (event) => {
             if (event.target.id === 'reset-shift') {
                 this.currentDate = new Date().toISOString().split('T')[0];
                 await this.updateView(this.currentDate);
             } else if (event.target.id === 'change-excel') {
                 await this.handleExcelChange();
+            } else if (event.target.id === 'open-settings') {
+                this.openSettingsModal();
+            } else if (event.target.id === 'close-settings') {
+                this.closeSettingsModal();
             }
         });
+
+        this.component.shadowRoot.querySelector('#settings-modal')?.addEventListener('click', (event) => {
+            if (event.target.id === 'settings-modal') {
+                this.closeSettingsModal();
+            }
+        });
+    }
+
+    openSettingsModal() {
+        const modal = this.component.shadowRoot.querySelector('#settings-modal');
+        modal.style.display = 'block';
+    }
+
+    closeSettingsModal() {
+        const modal = this.component.shadowRoot.querySelector('#settings-modal');
+        modal.style.display = 'none';
     }
 
     async updateErrorView(error = "알 수 없는 에러") {
