@@ -197,6 +197,5 @@ export class WorkShiftController {
     async resetTeamConfig() {
         const teamConfig = this.component.shadowRoot.querySelector('#team-config');
         teamConfig.value = JSON.stringify(JSON.parse(this.service.config.originalTeamConfig), null, 2);
-        await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(teamConfig.value)) });
     }
 }
