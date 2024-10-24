@@ -97,6 +97,28 @@ export class WorkShiftView {
                                     value="${localStorage.getItem('EXCEL_FILE_PATH') || ''}">
                                 <button id="change-excel">변경</button>
                             </div>
+                        <br/>
+                        <div>
+                        <div class="settings-item">
+                            <label>가져올 개월 수</label>
+                            <div class="month-config-container">
+                                <input type="number" id="month-count" min="1" max="42" 
+                                    value="${localStorage.getItem('MONTH_COUNT') || '3'}">
+                                <span style="margin-left: 5px;">개월</span>
+                                <button id="save-month-count">저장</button>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="settings-item">
+                            <label>팀 설정</label>
+                            <div class="team-config-container">
+                                <textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${localStorage.getItem('team_config') || ''}</textarea>
+                                <div style="margin-top: 10px;">
+                                    <button id="save-team-config">저장</button>
+                                    <button id="reset-team-config">초기화</button>
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>

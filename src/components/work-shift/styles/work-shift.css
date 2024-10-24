@@ -104,6 +104,16 @@ input[type="date"] {
     gap: 10px;
 }
 
+.team-setting-container {
+    display: flex;
+    gap: 10px;
+}
+
+.month-config-container {
+    display: flex;
+    gap: 10px;
+}
+
 #excel-path {
     flex: 1;
     padding: 8px;
