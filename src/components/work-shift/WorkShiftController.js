@@ -87,13 +87,17 @@ export class WorkShiftController {
                 this.closeSettingsModal();
             } else if (event.target.id === 'save-month-count') {
                 this.saveMonthCount(event);
+            } else if (event.target.id === 'save-team-config') {
+                this.saveTeamConfig(event);
+            } else if (event.target.id === 'reset-team-config') {
+                this.resetTeamConfig(event);
             }
         });
 
         this.component.shadowRoot.querySelector('#settings-modal')?.addEventListener('click', (event) => {
             if (event.target.id === 'settings-modal') {
                 this.closeSettingsModal();
-            }
+            } 
         });
 
         this.component.shadowRoot.addEventListener('change', async (event) => {
@@ -166,6 +170,7 @@ export class WorkShiftController {
     }
 
     async setConfig(config) {
+        this.service.config = config;
         localStorage.setItem('EXCEL_FILE_PATH', config.excelPath);
         localStorage.setItem('MONTH_COUNT', config.monthCount);
         localStorage.setItem('TEAM_CONFIG', config.teamConfig);
@@ -181,5 +186,16 @@ export class WorkShiftController {
     async saveMonthCount(event) {
         const monthCount = event.target.parentElement.querySelector('#month-count').value;
         await this.setConfig({ ...this.service.config, monthCount });
+    }
+
+    async saveTeamConfig() {
+        const newTeamConfig = this.component.shadowRoot.querySelector('#team-config').value;
+        await this.setConfig({ ...this.service.config, teamConfig: newTeamConfig });
+    }
+
+    async resetTeamConfig() {
+        const teamConfig = this.component.shadowRoot.querySelector('#team-config');
+        teamConfig.value = '';
+        await this.setConfig({ ...this.service.config, teamConfig: '' });
     }
 }

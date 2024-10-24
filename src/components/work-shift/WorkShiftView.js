@@ -112,7 +112,7 @@ export class WorkShiftView {
                         <div class="settings-item">
                             <label>팀 설정</label>
                             <div class="team-config-container">
-                                <textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${localStorage.getItem('team_config') || ''}</textarea>
+                                <textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${localStorage.getItem('TEAM_CONFIG') || ''}</textarea>
                                 <div style="margin-top: 10px;">
                                     <button id="save-team-config">저장</button>
                                     <button id="reset-team-config">초기화</button>
