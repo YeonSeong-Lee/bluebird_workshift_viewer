@@ -8,7 +8,9 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "build": "electron-builder",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "build": {
     "appId": "com.bluebird.work-shift",
@@ -38,5 +40,15 @@
     "chokidar": "^4.0.1",
     "electron-squirrel-startup": "^1.0.1",
     "exceljs": "^4.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "moduleFileExtensions": ["js", "json"],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ]
   }
 }
