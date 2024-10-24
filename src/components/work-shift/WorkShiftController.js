@@ -13,9 +13,15 @@ export class WorkShiftController {
 
     async init() {
         this.showLoading();
-        await this.fetch();
-        await this.updateView(this.currentDate);
-        this.hideLoading();
+        try {
+            await this.fetch();
+            await this.updateView(this.currentDate);
+        } catch (error) {
+            console.error('init error', error)
+            await this.updateErrorView(error);
+        } finally {
+            this.hideLoading();
+        }
         this.setupEventListeners();
     }
 
@@ -51,8 +57,6 @@ export class WorkShiftController {
                 }
             </style>
         `;
-        console.log('showLoading', this.component.shadowRoot)
-        console.log('loadingElement', loadingElement)
         if (this.component.shadowRoot) {
             this.component.shadowRoot.appendChild(loadingElement);
         } else {
@@ -87,6 +91,16 @@ export class WorkShiftController {
         });
     }
 
+    async updateErrorView(error = "알 수 없는 에러") {
+        const container = this.view.renderError(error);
+        const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
+        if (existingContainer) {
+            existingContainer.replaceWith(container);
+        } else {
+            this.component.shadowRoot.appendChild(container);
+        }
+    }
+
     async updateView(date) {
         this.showLoading();
         try {
@@ -95,7 +109,6 @@ export class WorkShiftController {
                 console.error('View or render method is not properly initialized');
                 return;
             }
- 
             const workers = await this.service.getWorkersByDate(date);
             const container = this.view.render(date, workers);
             
@@ -105,6 +118,8 @@ export class WorkShiftController {
             } else {
                 this.component.shadowRoot.appendChild(container);
             }
+        } catch (error) {
+            await this.updateErrorView(error);
         } finally {
             this.hideLoading();
         }
@@ -123,10 +138,6 @@ export class WorkShiftController {
     }
 
     async fetch() {
-        try {
-            await this.service.fetch_xlsx();
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        await this.service.fetch_xlsx();
     }
 }

@@ -6,10 +6,9 @@ export class WorkShiftService {
         }
         try {
             const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH);
-            console.log('EXCEL_FILE_PATH', EXCEL_FILE_PATH)
             console.log('raw_data', raw_data)
             if (!raw_data) {
-                throw new Error('Error fetching Excel data:');
+                throw new Error(`"${EXCEL_FILE_PATH}"에서 근무자 정보를 불러올 수 없습니다.`);
             }
             // TODO: 탭이름이 YY-MM 형식이 아닐 경우 에러 반환
             // TODO: validate raw_data and alert if it's invalid
@@ -62,7 +61,7 @@ export class WorkShiftService {
             localStorage.setItem('parsed_data_by_name', JSON.stringify(parsed_data_by_name));
             localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date));
         } catch (error) {
-            console.error('Error fetching Excel data:', error);
+            console.error("Error fetching Excel data:", error);
             throw error;
         }
     }
@@ -76,7 +75,7 @@ export class WorkShiftService {
         });
 
         if (!parsed_data_by_date || !parsed_data_by_date[today_key]) {
-            return null;
+            throw new Error(`"${today_key}"에 근무자 정보가 없습니다.`);
         }
 
         return {

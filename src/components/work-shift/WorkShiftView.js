@@ -5,7 +5,7 @@ export class WorkShiftView {
 
     render(date, workers) {
         if (!workers) {
-            return this.renderError();
+            throw new Error("근무자 정보가 없습니다.");
         }
         return this.renderShiftTable(date, workers);
     }
@@ -53,7 +53,7 @@ export class WorkShiftView {
         `;
     }
 
-    renderError(error = "알 수 없는 에러") {
+    renderError(error) {
         const container = document.createElement('div');
         container.classList.add('work-shift');
         container.innerHTML = `
@@ -62,10 +62,10 @@ export class WorkShiftView {
                     <th colspan="2" id="header">에러 페이지</th>
                 </tr>
                 <tr>
-                    <td>엑셀 파일을 확인해주세요.</td>
+                    <td><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
                 </tr>
                 <tr>
-                    <td>에러 메시지: ${error}</td>
+                    <td style="color: red;">${error}</td>
                 </tr>
                 <tr>
                     <td>

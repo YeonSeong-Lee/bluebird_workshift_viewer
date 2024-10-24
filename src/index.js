@@ -33,7 +33,7 @@ const createWindow = () => {
       await workbook.xlsx.readFile(filePath);
     } catch (error) {
       console.error('Error reading Excel file:', error);
-      return null;
+      throw error;
     }
     const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
     sheet_data.push(worksheet.name);

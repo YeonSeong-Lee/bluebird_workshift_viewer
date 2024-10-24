@@ -24,7 +24,6 @@ export class WorkShift extends HTMLElement {
         
         this.#view = new WorkShiftView(this.shadowRoot);
         this.#controller = new WorkShiftController(this, this.#view, WorkShiftService);
-        
         await this.#controller.init();
     }
 
