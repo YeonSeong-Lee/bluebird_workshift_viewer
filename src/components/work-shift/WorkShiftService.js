@@ -28,28 +28,7 @@ export class WorkShiftService {
                     continue
                 }
                 date.push(year + '년 ' + raw_data[1][i].value.trim() + ' ' + raw_data[2][i].value + '일')
-            }
-            const parsed_data_by_name = {}
-            const START_NAME_ROW = 4
-            const WORK_NUM = 30
-            for (let i = START_NAME_ROW; i < START_NAME_ROW + WORK_NUM; i++) {
-                const row = []
-                const name = raw_data[i][1]?.value
-                for (let j = 2; j < raw_data[i].length; j++) {
-                    if (!raw_data[i][j] || !raw_data[i][j].value) {
-                        continue
-                    }
-                    const temp = { date: date[j - 2], value: raw_data[i][j].value }
-                    if (raw_data[i][j].style?.fill?.fgColor?.argb === 'FFFFFF00') {
-                        temp['노D'] = true
-                    }
-                    row.push(temp)
-                }
-                parsed_data_by_name[name] = row
-            }
-    
-            localStorage.setItem('parsed_data_by_name', JSON.stringify(parsed_data_by_name))
-    
+            }    
             const parsed_data_by_date = {}
             for (let i = 2; i < raw_data[1].length; i++) {
                 const row = []
@@ -65,9 +44,6 @@ export class WorkShiftService {
                 }
                 parsed_data_by_date[date[i - 2]] = row
             }
-            localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date))
-            
-            localStorage.setItem('parsed_data_by_name', JSON.stringify(parsed_data_by_name));
             localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date));
         } catch (error) {
             console.error("Error fetching Excel data:", error);
