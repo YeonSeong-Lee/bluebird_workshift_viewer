@@ -92,6 +92,13 @@ export class WorkShiftController {
                 this.closeSettingsModal();
             }
         });
+
+        this.component.shadowRoot.addEventListener('change', async (event) => {
+            if (event.target.id === 'date-input') {
+                this.currentDate = event.target.value;
+                await this.updateView(this.currentDate);
+            }
+        });
     }
 
     openSettingsModal() {
@@ -120,7 +127,7 @@ export class WorkShiftController {
             // view 존재 여부 확인
             if (!this.view || typeof this.view.render !== 'function') {
                 console.error('View or render method is not properly initialized');
-                return;
+                throw new Error("뷰를 찾는데 실패");
             }
             const workers = await this.service.getWorkersByDate(date);
             const container = this.view.render(date, workers);
@@ -132,6 +139,7 @@ export class WorkShiftController {
                 this.component.shadowRoot.appendChild(container);
             }
         } catch (error) {
+            console.error('updateView error', error);
             await this.updateErrorView(error);
         } finally {
             this.hideLoading();
