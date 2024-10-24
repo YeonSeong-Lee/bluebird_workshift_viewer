@@ -35,6 +35,12 @@ describe('convertToYYMM', () => {
     expect(convertToYYMM('24년-03월')).toBe('24-03');
     expect(convertToYYMM('24년-3월')).toBe('24-03');
   });
+  
+  test('YY년MM월 형식을 YY-MM으로 변환', () => {
+    expect(convertToYYMM('23년8월')).toBe('23-08');
+  });
+
+
 
   test('잘못된 형식에 대한 에러 처리', () => {
     expect(() => convertToYYMM('잘못된 형식')).toThrow('날짜 변환 실패');
