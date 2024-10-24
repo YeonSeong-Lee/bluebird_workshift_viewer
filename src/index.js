@@ -26,8 +26,7 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  ipcMain.handle('fetch_xlsx', async (event, filePath) => {
-    const sheet_data = [];
+  ipcMain.handle('fetch_xlsx', async (event, filePath, monthCount) => {
     const workbook = new ExcelJS.Workbook();
     try {
       await workbook.xlsx.readFile(filePath);
@@ -35,17 +34,27 @@ const createWindow = () => {
       console.error('Error reading Excel file:', error);
       throw error;
     }
-    const worksheet = workbook.worksheets[workbook.worksheets.length - 1];
-    sheet_data.push(worksheet.name);
+
+    const result = [];
     const options = { includeEmpty: true };
-    
-    worksheet.eachRow(options, (row, rowNum) => {
-      sheet_data[rowNum] = []
-      row.eachCell(options, (cell, cellNum) => {
-        sheet_data[rowNum][cellNum] = { value:cell.value, style:cell.style }
-      })
-    })
-    return sheet_data;
+
+    const totalTabs = workbook.worksheets.length;
+    const startTab = Math.max(totalTabs - monthCount, 0);
+    console.log('startTab', startTab, monthCount);
+
+    for (let i = startTab; i < totalTabs; i++) {
+      const cur_tab = workbook.worksheets[i];
+      const sheet_data = [];
+      cur_tab.eachRow(options, (row, rowNum) => {
+        sheet_data[rowNum] = [];
+        row.eachCell(options, (cell, cellNum) => {
+          sheet_data[rowNum][cellNum] = { value: cell.value, style: cell.style };
+        });
+      });
+      result.push({ name: cur_tab.name, data: sheet_data });
+    }
+
+    return result;
   });
 
   // Watch for changes to the Excel file

@@ -3,7 +3,7 @@
 const { contextBridge, ipcRenderer, ipcMain } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-  fetch_xlsx: (filePath) => ipcRenderer.invoke('fetch_xlsx', filePath),
+  fetch_xlsx: (filePath, monthCount) => ipcRenderer.invoke('fetch_xlsx', filePath, monthCount),
   set_file_path: (filePath) => ipcRenderer.invoke('set_file_path', filePath),
   open_file_dialog: () => ipcRenderer.invoke('dialog:openFile'),
   on: (channel, callback) => ipcRenderer.on(channel, callback)

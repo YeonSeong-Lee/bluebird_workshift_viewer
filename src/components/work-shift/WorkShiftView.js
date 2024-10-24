@@ -112,7 +112,14 @@ export class WorkShiftView {
                         </div>
                         <div class="settings-item">
                             <label>팀 설정</label>
-                             <textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${ JSON.stringify(JSON.parse(localStorage.getItem('TEAM_CONFIG') || this.service.config.originalTeamConfig), null, 2) }</textarea>
+                            ${(() => {
+                                try {
+                                    const teamConfig = JSON.parse(localStorage.getItem('TEAM_CONFIG'));
+                                    return `<textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${ JSON.stringify(teamConfig, null, 2) }</textarea>`;
+                                } catch (e) {
+                                    return `<textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;"></textarea>`;
+                                }
+                            })()}
                             <div style="margin-top: 10px;">
                                 <button id="save-team-config">저장</button>
                                 <button id="reset-team-config">초기화</button>
