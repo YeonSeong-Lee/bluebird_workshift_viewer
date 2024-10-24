@@ -5,7 +5,7 @@ export class WorkShiftService {
         excelPath: '',
         monthCount: 3,
         teamConfig: '',
-        originalTeamConfig: teamConfig,
+        originalTeamConfig: JSON.stringify(teamConfig),
     }
 
     static async fetch_xlsx() {

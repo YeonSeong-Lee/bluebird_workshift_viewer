@@ -181,7 +181,7 @@ export class WorkShiftController {
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         const teamConfig = localStorage.getItem('TEAM_CONFIG');
         const originalTeamConfig = this.service.config.originalTeamConfig;
-        await this.setConfig({ excelPath, monthCount, teamConfig, originalTeamConfig: JSON.stringify(originalTeamConfig, null, 2) });
+        await this.setConfig({ excelPath, monthCount, teamConfig, originalTeamConfig });
     }
 
     async saveMonthCount(event) {
@@ -191,12 +191,12 @@ export class WorkShiftController {
 
     async saveTeamConfig() {
         const newTeamConfig = this.component.shadowRoot.querySelector('#team-config').value;
-        await this.setConfig({ ...this.service.config, teamConfig: newTeamConfig });
+        await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
     }
 
     async resetTeamConfig() {
         const teamConfig = this.component.shadowRoot.querySelector('#team-config');
-        teamConfig.value = JSON.stringify(this.service.config.originalTeamConfig, null, 2);
-        await this.setConfig({ ...this.service.config, teamConfig: teamConfig.value });
+        teamConfig.value = JSON.stringify(JSON.parse(this.service.config.originalTeamConfig), null, 2);
+        await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(teamConfig.value)) });
     }
 }

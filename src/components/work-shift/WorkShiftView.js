@@ -111,7 +111,7 @@ export class WorkShiftView {
                         </div>
                         <div class="settings-item">
                             <label>팀 설정</label>
-                            <div id="team-config-editor" style="height: 400px;"></div>
+                             <textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${localStorage.getItem('team_config') || ''}</textarea>
                             <div style="margin-top: 10px;">
                                 <button id="save-team-config">저장</button>
                                 <button id="reset-team-config">초기화</button>
@@ -133,27 +133,5 @@ export class WorkShiftView {
                 </th>
             </tr>
         `;
-    }
-
-    initializeJsonEditor() {
-        const container = this.shadowRoot.querySelector('#team-config-editor');
-        const options = {
-            mode: 'code',
-            onChange: () => {
-                try {
-                    const json = this.jsonEditor.get();
-                    localStorage.setItem('TEAM_CONFIG', JSON.stringify(json));
-                } catch (error) {
-                    console.error('Invalid JSON', error);
-                }
-            }
-        };
-        const initialJson = localStorage.getItem('TEAM_CONFIG') || '{}';
-        this.jsonEditor = new JSONEditor(container, options);
-        this.jsonEditor.set(JSON.parse(initialJson));
-    }
-
-    connectedCallback() {
-        this.initializeJsonEditor();
     }
 }
