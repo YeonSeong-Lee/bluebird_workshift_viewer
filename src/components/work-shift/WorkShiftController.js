@@ -15,6 +15,7 @@ export class WorkShiftController {
         this.showLoading();
         try {
             await this.fetch();
+            await this.loadAndSetConfig();
             await this.updateView(this.currentDate);
         } catch (error) {
             console.error('init error', error)
@@ -84,6 +85,8 @@ export class WorkShiftController {
                 this.openSettingsModal();
             } else if (event.target.id === 'close-settings') {
                 this.closeSettingsModal();
+            } else if (event.target.id === 'save-month-count') {
+                this.saveMonthCount(event);
             }
         });
 
@@ -160,5 +163,23 @@ export class WorkShiftController {
 
     async fetch() {
         await this.service.fetch_xlsx();
+    }
+
+    async setConfig(config) {
+        localStorage.setItem('EXCEL_FILE_PATH', config.excelPath);
+        localStorage.setItem('MONTH_COUNT', config.monthCount);
+        localStorage.setItem('TEAM_CONFIG', config.teamConfig);
+    }
+
+    async loadAndSetConfig() {
+        const excelPath = localStorage.getItem('EXCEL_FILE_PATH');
+        const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
+        const teamConfig = localStorage.getItem('TEAM_CONFIG');
+        await this.setConfig({ excelPath, monthCount, teamConfig });
+    }
+
+    async saveMonthCount(event) {
+        const monthCount = event.target.parentElement.querySelector('#month-count').value;
+        await this.setConfig({ ...this.service.config, monthCount });
     }
 }

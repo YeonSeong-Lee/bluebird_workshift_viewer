@@ -1,4 +1,10 @@
 export class WorkShiftService {
+    static config = {
+        excelPath: '',
+        monthCount: 3,
+        teamConfig: ''
+    }
+
     static async fetch_xlsx() {
         let EXCEL_FILE_PATH = localStorage.getItem('EXCEL_FILE_PATH');
         if (!EXCEL_FILE_PATH || EXCEL_FILE_PATH === '' || EXCEL_FILE_PATH === "undefined") {
@@ -87,5 +93,12 @@ export class WorkShiftService {
             off_worker: parsed_data_by_date[today_key]?.filter(worker => 
                 !(worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N')))
         };
+    }
+
+    static setConfig(config) {
+        this.config = config;
+        localStorage.setItem('EXCEL_FILE_PATH', config.excelPath);
+        localStorage.setItem('MONTH_COUNT', config.monthCount);
+        localStorage.setItem('TEAM_CONFIG', config.teamConfig);
     }
 }
