@@ -21,6 +21,7 @@ export class WorkShiftService {
                 throw new Error(`"${EXCEL_FILE_PATH}"에서 근무자 정보를 불러올 수 없습니다.`);
             }
             // TODO: validate raw_data and alert if it's invalid
+            // TODO: 함수 정리
             const parsed_data_by_date = {};
             raw_data.forEach(tab => {
                 const tabName = convertToYYMM(tab.name);
