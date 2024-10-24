@@ -12,6 +12,11 @@ export class WorkShift extends HTMLElement {
     }
 
     async connectedCallback() {
+        // 파일 경로 초기화
+        const initialPath = localStorage.getItem('EXCEL_FILE_PATH') || '24년 근무표.xlsx';
+        window.electronAPI.set_file_path(initialPath);
+        localStorage.setItem("EXCEL_FILE_PATH", initialPath);
+
         await this.setupComponent();
     }
 

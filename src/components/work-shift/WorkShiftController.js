@@ -13,6 +13,7 @@ export class WorkShiftController {
 
     async init() {
         this.showLoading();
+        await this.fetch();
         await this.updateView(this.currentDate);
         this.hideLoading();
         this.setupEventListeners();
@@ -121,7 +122,11 @@ export class WorkShiftController {
         }
     }
 
-    getView() {
-        return this.view;
+    async fetch() {
+        try {
+            await this.service.fetch_xlsx();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 }
