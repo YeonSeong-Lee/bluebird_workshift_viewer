@@ -16,25 +16,26 @@ export class WorkShiftView {
         container.classList.add('work-shift');
         container.innerHTML = `
             <table>
-                <tr>
-                    <th colspan="2" id="header">
-                        ${today} 근무표
-                        <button id="open-settings" class="settings-button">⚙️</button>
-                    </th>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <form id="shift-form">
-                            <input type="date" id="date-input" value="${date}" />
-                            <input type="reset" id="reset-shift" value="오늘 근무" />
-                        </form>
-                    </td>
-                </tr>
+                ${this.renderTitle(`${today} 근무표`, true)}
+                ${this.renderDateInputForm(date)}
                 ${this.renderWorkersList(workers)}
             </table>
             ${this.renderSettingsModal()}
         `;
         return container;
+    }
+
+    renderDateInputForm(date) {
+        return `
+            <tr>
+                <td colspan="2">
+                    <form id="shift-form">
+                        <input type="date" id="date-input" value="${date || ''}" />
+                        <input type="reset" id="reset-shift" value="오늘 근무" />
+                    </form>
+                </td>
+            </tr>
+        `;
     }
 
     renderWorkersList(workers) {
@@ -62,9 +63,8 @@ export class WorkShiftView {
         container.classList.add('work-shift');
         container.innerHTML = `
             <table>
-                <tr>
-                    <th colspan="2" id="header">에러 페이지</th>
-                </tr>
+                ${this.renderTitle('에러 페이지')}
+                ${this.renderDateInputForm()}
                 <tr>
                     <td><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
                 </tr>
@@ -123,6 +123,17 @@ export class WorkShiftView {
                     </div>
                 </div>
             </div>
+        `;
+    }
+
+    renderTitle(title) {
+        return `
+            <tr>
+                <th colspan="2" id="header">
+                    ${title}
+                    <button id="open-settings" class="settings-button">⚙️</button>
+                </th>
+            </tr>
         `;
     }
 }
