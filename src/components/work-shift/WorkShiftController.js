@@ -187,11 +187,15 @@ export class WorkShiftController {
     async saveMonthCount(event) {
         const monthCount = event.target.parentElement.querySelector('#month-count').value;
         await this.setConfig({ ...this.service.config, monthCount });
+        alert(`가지고 올 수 있는 최대 월 수는 ${this.service.config.MonthCount} 입니다.`);
+        this.closeSettingsModal();
     }
 
     async saveTeamConfig() {
         const newTeamConfig = this.component.shadowRoot.querySelector('#team-config').value;
         await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
+        alert('팀 설정이 변경되었습니다.');
+        this.closeSettingsModal();
     }
 
     async resetTeamConfig() {
