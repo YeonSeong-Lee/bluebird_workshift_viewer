@@ -1,8 +1,11 @@
+import teamConfig from '../../../team.config.js';
+
 export class WorkShiftService {
     static config = {
         excelPath: '',
         monthCount: 3,
-        teamConfig: ''
+        teamConfig: '',
+        originalTeamConfig: teamConfig,
     }
 
     static async fetch_xlsx() {

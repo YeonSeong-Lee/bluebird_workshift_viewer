@@ -180,7 +180,8 @@ export class WorkShiftController {
         const excelPath = localStorage.getItem('EXCEL_FILE_PATH');
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         const teamConfig = localStorage.getItem('TEAM_CONFIG');
-        await this.setConfig({ excelPath, monthCount, teamConfig });
+        const originalTeamConfig = this.service.config.originalTeamConfig;
+        await this.setConfig({ excelPath, monthCount, teamConfig, originalTeamConfig });
     }
 
     async saveMonthCount(event) {
@@ -195,7 +196,7 @@ export class WorkShiftController {
 
     async resetTeamConfig() {
         const teamConfig = this.component.shadowRoot.querySelector('#team-config');
-        teamConfig.value = '';
-        await this.setConfig({ ...this.service.config, teamConfig: '' });
+        teamConfig.value = JSON.stringify(this.service.config.originalTeamConfig);
+        await this.setConfig({ ...this.service.config, teamConfig: this.service.config.originalTeamConfig });
     }
 }
