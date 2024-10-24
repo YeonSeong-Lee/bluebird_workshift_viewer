@@ -53,7 +53,7 @@ export class WorkShiftView {
         `;
     }
 
-    renderError() {
+    renderError(error = "알 수 없는 에러") {
         const container = document.createElement('div');
         container.classList.add('work-shift');
         container.innerHTML = `
@@ -63,6 +63,9 @@ export class WorkShiftView {
                 </tr>
                 <tr>
                     <td>엑셀 파일을 확인해주세요.</td>
+                </tr>
+                <tr>
+                    <td>에러 메시지: ${error}</td>
                 </tr>
                 <tr>
                     <td>
