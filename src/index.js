@@ -16,7 +16,7 @@ const createWindow = () => {
     height: 700,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      nodeIntegration: false, // Set to false for security
+      nodeIntegration: true,
       contextIsolation: true // Enable context isolation
     },
     autoHideMenuBar: true,
@@ -59,7 +59,6 @@ const createWindow = () => {
     });
 
     watcher.on('change', () => {
-      console.log('file-changed');
       mainWindow.webContents.send('file-changed');
     });
   });

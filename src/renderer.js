@@ -5,6 +5,8 @@ const fetch_xlsx = async () => {
     }
     try {
         const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH)
+        console.log('EXCEL_FILE_PATH', EXCEL_FILE_PATH)
+        console.log('raw_data', raw_data)
         if (!raw_data) {
             throw new Error('Error fetching Excel data:');
         }
@@ -62,35 +64,36 @@ const fetch_xlsx = async () => {
 }
 
 const fetchAndRenderData = () => {
+    const workShiftElement = document.querySelector('work-shift');
     fetch_xlsx().then(() => {
-        const workShiftElement = document.querySelector('work-shift');
-        if (workShiftElement) {
-            workShiftElement.render(new Date().toISOString().slice(0, 10));
+        if (workShiftElement?.getController()?.getView()) {
+            // workShiftElement.getController().updateView(new Date().toISOString().slice(0, 10))
         }
     }).catch(error => {
-        console.error('Error in fetchAndRenderData:', error);
-        const workShiftElement = document.querySelector('work-shift');
-        console.log('workShiftElement', workShiftElement.errorRender)
-        if (workShiftElement && typeof workShiftElement.errorRender === 'function') {
-            workShiftElement.errorRender();
+        console.error('Error:', error);
+        if (workShiftElement?.getController()?.getView()?.renderError) {
+            workShiftElement.getController().getView().renderError();
         }
-        return null
     });
 };
-
 
 // Set initial Excel file path and notify main process
 const initialPath = localStorage.getItem('EXCEL_FILE_PATH') || '24년 근무표.xlsx';
 window.electronAPI.set_file_path(initialPath);
 localStorage.setItem("EXCEL_FILE_PATH", initialPath);
 
-
 // Initial fetch and render should be done after the page is loaded
+// document.addEventListener('DOMReady', () => {
+//     console.log('DOMReady')
+//     fetchAndRenderData();
+// });
+
+// DOM이 완전히 로드된 후에 실행
 document.addEventListener('DOMContentLoaded', () => {
     fetchAndRenderData();
 });
 
-// Listen for file changes
-window.electronAPI.on('file-changed', () => {
-    fetchAndRenderData();
-});
+// // Listen for file changes
+// window.electronAPI.on('file-changed', () => {
+//     fetchAndRenderData();
+// });
