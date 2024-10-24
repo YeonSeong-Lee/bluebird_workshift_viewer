@@ -100,7 +100,7 @@ export class WorkShiftView {
                         <br/>
                         <div>
                         <div class="settings-item">
-                            <label>���져올 개월 수</label>
+                            <label>가져올 개월 수</label>
                             <div class="month-config-container">
                                 <input type="number" id="month-count" min="1" max="42" 
                                     value="${localStorage.getItem('MONTH_COUNT') || '3'}">
