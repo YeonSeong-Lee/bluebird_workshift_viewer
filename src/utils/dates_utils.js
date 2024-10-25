@@ -65,7 +65,7 @@ export function convertToYYMM(date) {
 }
 
 function validateMonth(month) {
-    const monthNum = parseInt(month);
+    const monthNum = parseInt(month, 10);
     if (monthNum < 1 || monthNum > 12) {
         throw new Error('날짜 변환 실패 유효하지 않은 월 범위');
     }
