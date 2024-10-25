@@ -1,7 +1,7 @@
 import teamConfig from '../../../team.config.js';
 import { convertToYYMM } from '../../utils/dates_utils.js';
 
-const START_NAME_ROW = 2;
+const START_NAME_ROW = 4;
 const WORK_NUM = 30;
 
 export class WorkShiftService {
@@ -62,19 +62,19 @@ export class WorkShiftService {
             month: 'long', 
             day: 'numeric' 
         });
-
+        
         if (!parsed_data_by_date || !parsed_data_by_date[today_key]) {
             throw new Error(`"${today_key}"에 근무자 정보가 없습니다.`);
         }
 
         return {
-            day_worker: parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('D')),
+            day_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('D')),
             yellow_workers: parsed_data_by_date[today_key]?.filter(worker => 
                 worker["노D"] === true && (worker.value.includes('D') || worker.value.includes('E'))),
-            evening_worker: parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('E')),
-            night_worker: parsed_data_by_date[today_key]?.filter(worker => worker.value.includes('N')),
+            evening_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('E')),
+            night_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('N')),
             off_worker: parsed_data_by_date[today_key]?.filter(worker => 
-                !(worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N')))
+                !(typeof worker.value === 'string' && (worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N'))))
         };
     }
 }
