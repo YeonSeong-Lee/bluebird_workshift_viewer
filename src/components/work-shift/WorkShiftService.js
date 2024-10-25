@@ -1,5 +1,7 @@
 import teamConfig from '../../../team.config.js';
 import { convertToYYMM } from '../../utils/dates_utils.js';
+import { isValidYYYY년_MM월_DD일 } from '../../utils/validate_utils.js';
+import { isNameInTeamConfig } from '../../utils/validate_utils.js';
 
 const START_NAME_ROW = 4;
 const WORK_NUM = 30;
@@ -20,8 +22,6 @@ export class WorkShiftService {
             if (!raw_data) {
                 throw new Error(`"${EXCEL_FILE_PATH}"에서 근무자 정보를 불러올 수 없습니다.`);
             }
-            // TODO: validate raw_data and alert if it's invalid
-            // TODO: 함수 정리
             const parsed_data_by_date = {};
             raw_data.forEach(tab => {
                 const tabName = convertToYYMM(tab.name);
@@ -45,9 +45,12 @@ export class WorkShiftService {
                         }
                         row.push(temp);
                     }
-                    parsed_data_by_date[date[i - 2]] = row;
+                    if (isValidYYYY년_MM월_DD일(date[i - 2])) {
+                        parsed_data_by_date[date[i - 2]] = row;
+                    }
                 }
             });
+
             localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date));
         } catch (error) {
             console.error("Error fetching Excel data:", error);

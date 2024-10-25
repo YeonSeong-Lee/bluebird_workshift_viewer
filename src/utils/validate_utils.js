@@ -31,3 +31,29 @@ export const isNameInTeamConfig = (name, teamConfig) => {
         return false;
     }
 }
+
+/**
+ * 날짜 문자열이 'YYYY년 MM월 DD일' 형식인지 검사하는 함수
+ * @param {string} dateStr - 검사할 날짜 문자열
+ * @returns {boolean} 올바른 형식이면 true, 아니면 false
+ */
+export const isValidYYYY년_MM월_DD일 = (dateStr) => {
+    if (!dateStr || typeof dateStr !== 'string') {
+        return false;
+    }
+
+    // 'YYYY년 MM월 DD일' 형식의 정규식
+    const datePattern = /^(\d{4})년\s*(0?[1-9]|1[0-2])월\s*(0?[1-9]|[12][0-9]|3[01])일$/;
+    
+    if (!datePattern.test(dateStr)) {
+        return false;
+    }
+
+    // 날짜 유효성 검사
+    const [_, year, month, day] = dateStr.match(datePattern);
+    const date = new Date(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10));
+    
+    return date.getFullYear() === parseInt(year, 10) &&
+           date.getMonth() === parseInt(month, 10) - 1 &&
+           date.getDate() === parseInt(day, 10);
+}
