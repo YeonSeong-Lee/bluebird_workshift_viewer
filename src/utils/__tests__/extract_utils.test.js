@@ -1,4 +1,5 @@
-import { findDepartments } from '../extract_utils';
+import { findDepartments, getAllTeamNames } from '../extract_utils';
+
 
 describe('findDepartments', () => {
     test('returns empty array when inputs are invalid', () => {
@@ -46,5 +47,30 @@ describe('findDepartments', () => {
             }
         };
         expect(findDepartments("직원1", mockTeamConfig)).toEqual(["부서1", "팀1", "소팀1"]);
+    });
+});
+
+
+describe('getAllTeamNames', () => {
+    test('returns all team names', () => {
+        const mockTeamConfig = {
+            "부서1": {
+                "팀1": {
+                    "소팀1": ["직원1"]
+                }
+            }
+        };
+        expect(getAllTeamNames(mockTeamConfig)).toEqual(["부서1", "팀1", "소팀1"]);
+    });
+
+    test('과장이 팀 이름에 포함되지 않음', () => {
+        const mockTeamConfig = {
+            "부서1": {
+                "팀1": {
+                    "과장": ["이과장"]
+                }
+            }
+        };
+        expect(getAllTeamNames(mockTeamConfig)).toEqual(["부서1", "팀1"]);
     });
 });

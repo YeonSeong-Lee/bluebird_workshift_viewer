@@ -40,3 +40,39 @@ export const findDepartments = (name, teamConfig) => {
         return [];
     }
 }
+
+/**
+ * 팀 설정에서 모든 팀 이름을 추출하는 함수
+ * @param {object} teamConfig - 팀 설정 객체
+ * @returns {string[]} 모든 팀 이름 배열
+ */
+export const getAllTeamNames = (teamConfig) => {
+    if (!teamConfig) {
+        return [];
+    }
+
+    const teams = new Set();
+
+    const extractTeams = (obj) => {
+        for (const key in obj) {
+            if (Array.isArray(obj[key])) {
+                if (key !== '과장') { // '과장'은 팀 이름이 아니므로 제외
+                    teams.add(key);
+                }
+            } else if (typeof obj[key] === 'object') {
+                if (key !== '과장') { // '과장'은 팀 이름이 아니므로 제외
+                    teams.add(key);
+                }
+                extractTeams(obj[key]);
+            }
+        }
+    };
+
+    try {
+        extractTeams(teamConfig);
+        return Array.from(teams);
+    } catch (error) {
+        console.error('팀 이름 추출 중 오류 발생:', error);
+        return [];
+    }
+}
