@@ -11,19 +11,23 @@ export const findDepartments = (name, teamConfig) => {
 
     const departments = [];
     
-    const searchInConfig = (obj) => {
+    const searchInConfig = (obj, parentDept = null) => {
         for (const key in obj) {
             if (Array.isArray(obj[key])) {
                 if (obj[key].includes(name)) {
-                    if (department) {
-                        departments.push(department);
+                    if (parentDept) {
+                        departments.push(parentDept);
                     }
                     if (key !== '과장') { // '과장'은 부서명이 아니므로 제외
                         departments.push(key);
                     }
                 }
             } else if (typeof obj[key] === 'object') {
-                searchInConfig(obj[key]);
+                const nextParent = key === '과장' ? parentDept : key;
+                if (parentDept && !departments.includes(parentDept)) {
+                    departments.push(parentDept);
+                }
+                searchInConfig(obj[key], nextParent);
             }
         }
     };
