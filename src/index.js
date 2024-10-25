@@ -40,7 +40,6 @@ const createWindow = () => {
 
     const totalTabs = workbook.worksheets.length;
     const startTab = Math.max(totalTabs - monthCount, 0);
-    console.log('startTab', startTab, monthCount);
 
     for (let i = startTab; i < totalTabs; i++) {
       const cur_tab = workbook.worksheets[i];
