@@ -69,7 +69,7 @@ export class WorkShiftView {
                     <td><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
                 </tr>
                 <tr>
-                    <td style="color: red;">${error}</td>
+                    <td style="color: red; white-space: pre-line; text-align: center;">${error}</td>
                 </tr>
                 <tr>
                     <td>
