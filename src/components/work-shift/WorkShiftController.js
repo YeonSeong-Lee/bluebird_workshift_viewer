@@ -86,11 +86,11 @@ export class WorkShiftController {
             } else if (event.target.id === 'close-settings') {
                 this.closeSettingsModal();
             } else if (event.target.id === 'save-month-count') {
-                this.saveMonthCount(event);
+                await this.saveMonthCount(event);
             } else if (event.target.id === 'save-team-config') {
-                this.saveTeamConfig(event);
+                await this.saveTeamConfig(event);
             } else if (event.target.id === 'reset-team-config') {
-                this.resetTeamConfig(event);
+                await this.resetTeamConfig(event);
             }
         });
 
@@ -170,11 +170,10 @@ export class WorkShiftController {
     }
 
     async setConfig(config) {
-        this.config = config;
-        console.log('setting team config', config.teamConfig);
+        this.service.config = config;
         localStorage.setItem('EXCEL_FILE_PATH', config.excelPath);
         localStorage.setItem('MONTH_COUNT', config.monthCount);
-        localStorage.setItem('TEAM_CONFIG', (config.teamConfig === '' || config.teamConfig === 'undefined') ? this.config.originalTeamConfig : config.teamConfig);
+        localStorage.setItem('TEAM_CONFIG', (config.teamConfig === '' || config.teamConfig === 'undefined' || config.teamConfig === 'null') ? this.service.config.originalTeamConfig : config.teamConfig);
     }
 
     async loadAndSetConfig() {
@@ -186,17 +185,29 @@ export class WorkShiftController {
     }
 
     async saveMonthCount(event) {
-        const monthCount = event.target.parentElement.querySelector('#month-count').value;
-        await this.setConfig({ ...this.service.config, monthCount });
-        alert(`가지고 올 수 있는 최대 월 수는 ${this.service.config.monthCount} 입니다.`);
-        this.closeSettingsModal();
+        const monthCount = Number(event.target.parentElement.querySelector('#month-count').value);
+        try {
+            await this.setConfig({ ...this.service.config, monthCount });
+            alert(`가지고 올 수 있는 최대 월 수를 ${monthCount}로 변경했습니다.`);
+        } catch (error) {
+            console.error('saveMonthCount error', error);
+            await this.updateErrorView(error);
+        } finally {
+            this.closeSettingsModal();
+        }
     }
 
     async saveTeamConfig() {
         const newTeamConfig = this.component.shadowRoot.querySelector('#team-config').value;
-        await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
-        alert('팀 설정이 변경되었습니다.');
-        this.closeSettingsModal();
+        try {
+            await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
+            alert('팀 설정이 변경되었습니다.');
+        } catch (error) {
+            console.error('saveTeamConfig error', error);
+            await this.updateErrorView(error);
+        } finally {
+            this.closeSettingsModal();
+        }
     }
 
     async resetTeamConfig() {
