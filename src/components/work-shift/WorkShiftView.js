@@ -165,7 +165,7 @@ export class WorkShiftView {
             <thead>
                 <tr>
                     <th colspan="2" id="header">
-                        ${title}
+                        <span class="header-text">${title}</span>
                         <button id="open-settings" class="settings-button">⚙️</button>
                     </th>
                 </tr>
