@@ -3,21 +3,21 @@ export class WorkShiftView {
         this.shadowRoot = shadowRoot;
     }
 
-    render(date, workers) {
+    render(date, workers, teamNames) {
         if (!workers) {
             throw new Error("근무자 정보가 없습니다.");
         }
-        return this.renderShiftTable(date, workers);
+        return this.renderShiftTable(date, workers, teamNames);
     }
 
-    renderShiftTable(date, workers) {
+    renderShiftTable(date, workers, teamNames) {
         const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
         const container = document.createElement('div');
         container.classList.add('work-shift');
         container.innerHTML = `
             <table>
                 ${this.renderTitle(`${today} 근무표`)}
-                ${this.renderDateInputForm(date)}
+                ${this.renderSettingHeader(date, teamNames)}
                 ${this.renderWorkersList(workers)}
             </table>
             ${this.renderSettingsModal()}
@@ -25,26 +25,60 @@ export class WorkShiftView {
         return container;
     }
 
+    renderSettingHeader(date, teamNames = []) {
+        return `
+            <tbody>
+                <tr>
+                    ${this.renderTeamFilter(teamNames)}
+                    ${this.renderDateInputForm(date)}
+                </tr>
+            </tbody>
+        `;
+    }
+
+    /**
+     * @param {string[]} teamNames - 팀 이름 목록
+     */
+    renderTeamFilter(teamNames = []) {
+        return `
+            <td>
+                <select id="team-filter">
+                <option value="all">전체 팀</option>
+                ${teamNames.map(team => `
+                    <option value="${team}">${team}</option>
+                    `).join('')}
+                </select>
+            </td>
+        `;
+    }
+
     renderDateInputForm(date) {
         return `
-            <tr>
-                <td colspan="2">
-                    <form id="shift-form">
-                        <input type="date" id="date-input" value="${date || ''}" />
-                        <input type="reset" id="reset-shift" value="오늘 근무" />
-                    </form>
-                </td>
-            </tr>
+            <td>
+                <form id="shift-form">
+                    <input type="date" id="date-input" value="${date || ''}" />
+                    <input type="reset" id="reset-shift" value="오늘 근무" />
+                </form>
+            </td>
         `;
     }
 
     renderWorkersList(workers) {
+        const selectedTeam = this.shadowRoot.querySelector('#team-filter')?.value || 'all';
+        
+        const filterWorkersByTeam = (workerList) => {
+            if (!workerList || selectedTeam === 'all') return workerList;
+            return workerList.filter(worker => 
+                isNameInTeamConfig(worker.name, selectedTeam)
+            );
+        };
+
         return `
-        ${this.renderWorkerGroup('노D', workers.yellow_workers)}
-            ${this.renderWorkerGroup('D', workers.day_worker)}
-            ${this.renderWorkerGroup('E', workers.evening_worker)}
-            ${this.renderWorkerGroup('N', workers.night_worker)}
-            ${this.renderWorkerGroup('OFF', workers.off_worker)}
+            ${this.renderWorkerGroup('노D', filterWorkersByTeam(workers.yellow_workers))}
+            ${this.renderWorkerGroup('D', filterWorkersByTeam(workers.day_worker))}
+            ${this.renderWorkerGroup('E', filterWorkersByTeam(workers.evening_worker))}
+            ${this.renderWorkerGroup('N', filterWorkersByTeam(workers.night_worker))}
+            ${this.renderWorkerGroup('OFF', filterWorkersByTeam(workers.off_worker))}
         `;
     }
 
@@ -134,12 +168,14 @@ export class WorkShiftView {
 
     renderTitle(title) {
         return `
-            <tr>
-                <th colspan="2" id="header">
-                    ${title}
-                    <button id="open-settings" class="settings-button">⚙️</button>
-                </th>
-            </tr>
+            <thead>
+                <tr>
+                    <th colspan="2" id="header">
+                        ${title}
+                        <button id="open-settings" class="settings-button">⚙️</button>
+                    </th>
+                </tr>
+            </thead>
         `;
     }
 }

@@ -1,7 +1,7 @@
 import teamConfig from '../../../team.config.js';
 import { convertToYYMM } from '../../utils/dates_utils.js';
 import { isValidYYYY년_MM월_DD일 } from '../../utils/validate_utils.js';
-import { isNameInTeamConfig } from '../../utils/validate_utils.js';
+import { getAllTeamNames, findDepartments } from '../../utils/extract_utils.js';
 
 const START_NAME_ROW = 4;
 const WORK_NUM = 30;
@@ -12,6 +12,7 @@ export class WorkShiftService {
         monthCount: 3,
         teamConfig: '',
         originalTeamConfig: JSON.stringify(teamConfig),
+        teamNames: getAllTeamNames(teamConfig),
     }
 
     static async fetch_xlsx() {
@@ -43,6 +44,7 @@ export class WorkShiftService {
                         if (tab.data[j][i].style?.fill?.fgColor?.argb === 'FFFFFF00') {
                             temp['노D'] = true;
                         }
+                        temp['team'] = findDepartments(temp.name, this.config.teamConfig);
                         row.push(temp);
                     }
                     if (isValidYYYY년_MM월_DD일(date[i - 2])) {
@@ -50,6 +52,7 @@ export class WorkShiftService {
                     }
                 }
             });
+            console.log('parsed_data_by_date', parsed_data_by_date)
 
             localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date));
         } catch (error) {

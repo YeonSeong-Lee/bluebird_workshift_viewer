@@ -29,9 +29,70 @@ th, td {
     width: 70%;
 }
 
-#shift-form {
+/* 설정 헤더 스타일링 */
+tr td {
+    padding: 12px;
+    text-align: left;
+}
+
+/* 날짜 입력 폼이 있는 td */
+tr td:first-child {
+    width: 10%;
+}
+
+/* 팀 필터가 있는 td */
+tr td:last-child {
+    width: 90%;
+}
+
+#setting-header {
     display: flex;
-    gap: 10px;
+    gap: 12px;
+    align-items: space-around;
+}
+
+/* 날짜 입력 폼 스타일링 */
+#shift-form {
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+#date-input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#reset-shift {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#reset-shift:hover {
+    background-color: #0056b3;
+}
+
+/* 팀 필터 셀렉트 박스 스타일링 */
+#team-filter {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+    min-width: 120px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 button, input[type="reset"] {
