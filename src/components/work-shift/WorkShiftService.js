@@ -73,13 +73,16 @@ export class WorkShiftService {
             throw new Error(`"${today_key}"에 근무자 정보가 없습니다.`);
         }
 
+        const workers = parsed_data_by_date[today_key];
+        workers.sort((a, b) => a.name.localeCompare(b.name)); // 이름순으로 정렬
+
         return {
-            day_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('D')),
-            yellow_workers: parsed_data_by_date[today_key]?.filter(worker => 
+            day_worker: workers.filter(worker => typeof worker.value === 'string' && worker.value.includes('D')),
+            yellow_workers: workers.filter(worker => 
                 worker["노D"] === true && (worker.value.includes('D') || worker.value.includes('E'))),
-            evening_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('E')),
-            night_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('N')),
-            off_worker: parsed_data_by_date[today_key]?.filter(worker => 
+            evening_worker: workers.filter(worker => typeof worker.value === 'string' && worker.value.includes('E')),
+            night_worker: workers.filter(worker => typeof worker.value === 'string' && worker.value.includes('N')),
+            off_worker: workers.filter(worker => 
                 !(typeof worker.value === 'string' && (worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N'))))
         };
     }
