@@ -158,7 +158,6 @@ export class WorkShiftController {
 
     async handleTeamFilterChange() {
         this.showLoading();
-        debugger;
         try {
             const workers = await this.service.getWorkersByDate(this.currentDate);
             const container = this.component.shadowRoot.querySelector('.work-shift');
