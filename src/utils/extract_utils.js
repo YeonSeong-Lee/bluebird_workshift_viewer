@@ -18,7 +18,10 @@ export const findDepartments = (name, teamConfig) => {
                     if (parentDept) {
                         departments.push(parentDept);
                     }
-                    if (key !== '과장') { // '과장'은 부서명이 아니므로 제외
+                    if (key === '과장') {
+                        departments.push(...Object.keys(obj).filter(key => key !== '과장'));
+                    }
+                    else {
                         departments.push(key);
                     }
                 }

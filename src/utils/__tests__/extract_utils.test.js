@@ -21,7 +21,7 @@ describe('findDepartments', () => {
         };
 
         expect(findDepartments("김철수", mockTeamConfig)).toEqual(["사무국"]);
-        expect(findDepartments("이과장", mockTeamConfig)).toEqual(["복지증진과"]);
+        expect(findDepartments("이과장", mockTeamConfig)).toEqual(["복지증진과", "복지사업팀", "기획사업팀"]);
         expect(findDepartments("박복지", mockTeamConfig)).toEqual(["복지증진과", "복지사업팀"]);
         expect(findDepartments("최기획", mockTeamConfig)).toEqual(["복지증진과", "기획사업팀"]);
     });
@@ -47,6 +47,16 @@ describe('findDepartments', () => {
             }
         };
         expect(findDepartments("직원1", mockTeamConfig)).toEqual(["부서1", "팀1", "소팀1"]);
+    });
+
+    test('handles "과장" correctly', () => {
+        const mockTeamConfig = {
+            "부서1": {
+                "과장": ["이과장"],
+                "팀1": ["직원1"]
+            }
+        };
+        expect(findDepartments("이과장", mockTeamConfig)).toEqual(["부서1", "팀1"]);
     });
 });
 
