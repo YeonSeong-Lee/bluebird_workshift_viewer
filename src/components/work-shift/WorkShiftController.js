@@ -27,38 +27,73 @@ export class WorkShiftController {
     }
 
     showLoading() {
+        const workShiftElement = this.component.shadowRoot.querySelector('.work-shift');
         const loadingElement = document.createElement('div');
-        loadingElement.className = 'loading-spinner';
+        loadingElement.className = 'loading-skeleton';
         loadingElement.innerHTML = `
             <style>
-                .loading-spinner {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
+                .loading-skeleton {
+                    margin: 20px;
+                    width: calc(100% - 40px); /* work-shift와 동일한 마진 적용 */
+                }
+                .skeleton-table {
                     width: 100%;
-                    height: 100%;
-                    background: rgba(255, 255, 255, 0.8);
+                    background: white;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+                .skeleton-header {
+                    height: 55px; /* 헤더 높이와 일치 */
+                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                }
+                .skeleton-controls {
                     display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 1000;
+                    justify-content: space-between;
+                    gap: 12px;
+                    padding: 12px;
+                    border-bottom: 1px solid #ddd;
                 }
-                .loading-spinner::after {
-                    content: "";
-                    width: 50px;
-                    height: 50px;
-                    border: 5px solid #f3f3f3;
-                    border-top: 5px solid #3498db;
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
+                .skeleton-control {
+                    height: 43px; /* 컨트롤 요소들과 동일한 높이 */
+                    width: 120px;
+                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                    border-radius: 4px;
                 }
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
+                .skeleton-row {
+                    height: 51px; /* td 패딩 포함한 높이 */
+                    margin: 0;
+                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                    background-size: 200% 100%;
+                    animation: shimmer 1.5s infinite;
+                    border-bottom: 1px solid #ddd;
+                }
+                @keyframes shimmer {
+                    0% { background-position: 200% 0; }
+                    100% { background-position: -200% 0; }
                 }
             </style>
+            <div class="skeleton-table">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-controls">
+                    <div class="skeleton-control"></div>
+                    <div class="skeleton-control"></div>
+                </div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+            </div>
         `;
+
         if (this.component.shadowRoot) {
+            if (workShiftElement) {
+                workShiftElement.style.display = 'none';
+            }
             this.component.shadowRoot.appendChild(loadingElement);
         } else {
             console.error('shadowRoot가 없습니다');
@@ -67,7 +102,7 @@ export class WorkShiftController {
     }
 
     hideLoading() {
-        const loadingElement = this.component.shadowRoot.querySelector('.loading-spinner');
+        const loadingElement = this.component.shadowRoot.querySelector('.loading-skeleton');
         if (loadingElement) {
             loadingElement.remove();
         }
