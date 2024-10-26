@@ -10,7 +10,7 @@ export class WorkShiftService {
     static config = {
         excelPath: '',
         monthCount: 3,
-        teamConfig: '',
+        teamConfig: {},
         originalTeamConfig: JSON.stringify(teamConfig),
         teamNames: getAllTeamNames(teamConfig),
     }
@@ -44,7 +44,7 @@ export class WorkShiftService {
                         if (tab.data[j][i].style?.fill?.fgColor?.argb === 'FFFFFF00') {
                             temp['노D'] = true;
                         }
-                        temp['team'] = findDepartments(temp.name, this.config.teamConfig);
+                        temp['team'] = findDepartments(temp.name, JSON.parse(this.config.teamConfig));
                         row.push(temp);
                     }
                     if (isValidYYYY년_MM월_DD일(date[i - 2])) {
@@ -81,6 +81,17 @@ export class WorkShiftService {
             night_worker: parsed_data_by_date[today_key]?.filter(worker => typeof worker.value === 'string' && worker.value.includes('N')),
             off_worker: parsed_data_by_date[today_key]?.filter(worker => 
                 !(typeof worker.value === 'string' && (worker.value.includes('D') || worker.value.includes('E') || worker.value.includes('N'))))
+        };
+    }
+
+    static filterWorkersByTeam(workers, team) {
+        if (team === 'all') return workers;
+        return {
+            day_worker: workers.day_worker?.filter(worker => worker.team.includes(team)),
+            yellow_workers: workers.yellow_workers?.filter(worker => worker.team.includes(team)), 
+            evening_worker: workers.evening_worker?.filter(worker => worker.team.includes(team)),
+            night_worker: workers.night_worker?.filter(worker => worker.team.includes(team)),
+            off_worker: workers.off_worker?.filter(worker => worker.team.includes(team))
         };
     }
 }

@@ -3,6 +3,11 @@ export class WorkShiftView {
         this.shadowRoot = shadowRoot;
     }
 
+    /**
+     * @param {string} date - 날짜
+     * @param {Object} workers - 근무자 정보
+     * @param {string[]} teamNames - 팀 이름 목록
+     */
     render(date, workers, teamNames) {
         if (!workers) {
             throw new Error("근무자 정보가 없습니다.");
@@ -27,12 +32,10 @@ export class WorkShiftView {
 
     renderSettingHeader(date, teamNames = []) {
         return `
-            <tbody>
-                <tr>
-                    ${this.renderTeamFilter(teamNames)}
-                    ${this.renderDateInputForm(date)}
-                </tr>
-            </tbody>
+            <tr id="setting-header">
+                ${this.renderTeamFilter(teamNames)}
+                ${this.renderDateInputForm(date)}
+            </tr>
         `;
     }
 
@@ -43,7 +46,7 @@ export class WorkShiftView {
         return `
             <td>
                 <select id="team-filter">
-                <option value="all">전체 팀</option>
+                <option value="all">전체</option>
                 ${teamNames.map(team => `
                     <option value="${team}">${team}</option>
                     `).join('')}
@@ -64,21 +67,12 @@ export class WorkShiftView {
     }
 
     renderWorkersList(workers) {
-        const selectedTeam = this.shadowRoot.querySelector('#team-filter')?.value || 'all';
-        
-        const filterWorkersByTeam = (workerList) => {
-            if (!workerList || selectedTeam === 'all') return workerList;
-            return workerList.filter(worker => 
-                isNameInTeamConfig(worker.name, selectedTeam)
-            );
-        };
-
         return `
-            ${this.renderWorkerGroup('노D', filterWorkersByTeam(workers.yellow_workers))}
-            ${this.renderWorkerGroup('D', filterWorkersByTeam(workers.day_worker))}
-            ${this.renderWorkerGroup('E', filterWorkersByTeam(workers.evening_worker))}
-            ${this.renderWorkerGroup('N', filterWorkersByTeam(workers.night_worker))}
-            ${this.renderWorkerGroup('OFF', filterWorkersByTeam(workers.off_worker))}
+            ${this.renderWorkerGroup('노D', workers.yellow_workers)}
+            ${this.renderWorkerGroup('D', workers.day_worker)}
+            ${this.renderWorkerGroup('E', workers.evening_worker)}
+            ${this.renderWorkerGroup('N', workers.night_worker)}
+            ${this.renderWorkerGroup('OFF', workers.off_worker)}
         `;
     }
 

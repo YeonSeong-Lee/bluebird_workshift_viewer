@@ -105,6 +105,9 @@ export class WorkShiftController {
                 this.currentDate = event.target.value;
                 await this.updateView(this.currentDate);
             }
+            else if (event.target.id === 'team-filter') {
+                await this.handleTeamFilterChange();
+            }
         });
     }
 
@@ -137,7 +140,7 @@ export class WorkShiftController {
                 throw new Error("뷰를 찾는데 실패");
             }
             const workers = await this.service.getWorkersByDate(date);
-            const container = this.view.render(date, workers);
+            const container = this.view.render(date, workers, this.service.config.teamNames);
             
             const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
             if (existingContainer) {
@@ -147,6 +150,26 @@ export class WorkShiftController {
             }
         } catch (error) {
             console.error('updateView error', error);
+            await this.updateErrorView(error);
+        } finally {
+            this.hideLoading();
+        }
+    }
+
+    async handleTeamFilterChange() {
+        this.showLoading();
+        debugger;
+        try {
+            const workers = await this.service.getWorkersByDate(this.currentDate);
+            const container = this.component.shadowRoot.querySelector('.work-shift');
+            const table = container.querySelector('table');
+            const oldWorkersList = table.querySelectorAll('tr:not(thead tr):not(#setting-header)');
+            oldWorkersList.forEach(tr => tr.remove());
+            const filteredWorkers = this.service.filterWorkersByTeam(workers, this.component.shadowRoot.querySelector('#team-filter')?.value || 'all');
+            const newWorkersList = this.view.renderWorkersList(filteredWorkers);
+            table.insertAdjacentHTML('beforeend', newWorkersList);
+        } catch (error) {
+            console.error('handleTeamFilterChange error', error);
             await this.updateErrorView(error);
         } finally {
             this.hideLoading();
@@ -180,8 +203,7 @@ export class WorkShiftController {
         const excelPath = localStorage.getItem('EXCEL_FILE_PATH');
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         let teamConfig = localStorage.getItem('TEAM_CONFIG');
-        const originalTeamConfig = this.service.config.originalTeamConfig;
-        await this.setConfig({ excelPath, monthCount, teamConfig, originalTeamConfig });
+        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig });
     }
 
     async saveMonthCount(event) {

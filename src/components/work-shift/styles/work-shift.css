@@ -22,11 +22,13 @@ th, td {
 
 .shift-type {
     font-weight: bold;
-    width: 30%;
+    width: 20%;
 }
 
 .worker-list {
-    width: 70%;
+    width: 80%;
+    text-align: right;
+    word-break: keep-all;
 }
 
 /* 설정 헤더 스타일링 */
@@ -35,28 +37,15 @@ tr td {
     text-align: left;
 }
 
-/* 날짜 입력 폼이 있는 td */
-tr td:first-child {
-    width: 10%;
-}
-
-/* 팀 필터가 있는 td */
-tr td:last-child {
-    width: 90%;
-}
 
 #setting-header {
-    display: flex;
-    gap: 12px;
-    align-items: space-around;
+    text-align: right;
 }
 
 /* 날짜 입력 폼 스타일링 */
 #shift-form {
-    display: inline-flex;
     gap: 12px;
-    align-items: center;
-    white-space: nowrap;
+    text-align: right;
 }
 
 #date-input {
@@ -64,16 +53,23 @@ tr td:last-child {
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 14px;
+    line-height: 1.5;
+    height: 38px;
+    box-sizing: border-box;
 }
 
 #reset-shift {
-    padding: 8px 15px;
-    background-color: #007bff;
-    color: white;
+    padding: 8px 12px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 14px;
+    line-height: 1.5;
+    height: 38px;
+    box-sizing: border-box;
     transition: background-color 0.2s;
+    background-color: #007bff;
+    color: white;
 }
 
 #reset-shift:hover {
@@ -82,14 +78,13 @@ tr td:last-child {
 
 /* 팀 필터 셀렉트 박스 스타일링 */
 #team-filter {
+    height: 38px;
     padding: 8px 12px;
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 14px;
     background-color: white;
     cursor: pointer;
-    min-width: 120px;
-    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
