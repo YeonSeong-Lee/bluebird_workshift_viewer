@@ -67,9 +67,15 @@ export class WorkShiftController {
         this.component.shadowRoot.querySelector('#settings-modal')?.addEventListener('click', (event) => {
             if (event.target.id === 'settings-modal') {
                 this.closeSettingsModal();
-            } 
+            }
         });
 
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                this.closeSettingsModal();
+            }
+        });
+        
         this.component.shadowRoot.addEventListener('change', async (event) => {
             if (event.target.id === 'date-input') {
                 this.currentDate = event.target.value;
