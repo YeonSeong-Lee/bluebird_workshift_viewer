@@ -206,6 +206,12 @@ export class WorkShiftController {
     async saveTeamConfig() {
         const newTeamConfig = this.component.shadowRoot.querySelector('#team-config').value;
         try {
+            JSON.parse(newTeamConfig);
+        } catch (error) {
+            alert('유효하지 않은 형식이라 저장할 수 없습니다. \n오류: ' + error.message);
+            return;
+        }
+        try {
             await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
             alert('팀 설정이 변경되었습니다.');
         } catch (error) {
