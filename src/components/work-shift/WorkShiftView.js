@@ -172,4 +172,24 @@ export class WorkShiftView {
             </thead>
         `;
     }
+
+    renderLoading() {
+        const loadingElement = document.createElement('div');
+        loadingElement.className = 'loading-skeleton';
+        loadingElement.innerHTML = `
+            <div class="skeleton-table">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-controls">
+                    <div class="skeleton-control"></div>
+                    <div class="skeleton-control"></div>
+                </div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+            </div>
+        `;
+        return loadingElement;
+    }
 }

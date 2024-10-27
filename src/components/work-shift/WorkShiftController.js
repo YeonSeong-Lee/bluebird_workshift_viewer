@@ -17,84 +17,19 @@ export class WorkShiftController {
             await this.loadAndSetConfig();
             await this.fetch();
             await this.updateView(this.currentDate);
+            this.setupEventListeners();
         } catch (error) {
             console.error('init error', error)
             await this.updateErrorView(error);
         } finally {
             this.hideLoading();
         }
-        this.setupEventListeners();
     }
 
     showLoading() {
-        const workShiftElement = this.component.shadowRoot.querySelector('.work-shift');
-        const loadingElement = document.createElement('div');
-        loadingElement.className = 'loading-skeleton';
-        loadingElement.innerHTML = `
-            <style>
-                .loading-skeleton {
-                    margin: 20px;
-                    width: calc(100% - 40px); /* work-shift와 동일한 마진 적용 */
-                }
-                .skeleton-table {
-                    width: 100%;
-                    background: white;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                }
-                .skeleton-header {
-                    height: 55px; /* 헤더 높이와 일치 */
-                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                    background-size: 200% 100%;
-                    animation: shimmer 1.5s infinite;
-                }
-                .skeleton-controls {
-                    display: flex;
-                    justify-content: space-between;
-                    gap: 12px;
-                    padding: 12px;
-                    border-bottom: 1px solid #ddd;
-                }
-                .skeleton-control {
-                    height: 43px; /* 컨트롤 요소들과 동일한 높이 */
-                    width: 120px;
-                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                    background-size: 200% 100%;
-                    animation: shimmer 1.5s infinite;
-                    border-radius: 4px;
-                }
-                .skeleton-row {
-                    height: 51px; /* td 패딩 포함한 높이 */
-                    margin: 0;
-                    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-                    background-size: 200% 100%;
-                    animation: shimmer 1.5s infinite;
-                    border-bottom: 1px solid #ddd;
-                }
-                @keyframes shimmer {
-                    0% { background-position: 200% 0; }
-                    100% { background-position: -200% 0; }
-                }
-            </style>
-            <div class="skeleton-table">
-                <div class="skeleton-header"></div>
-                <div class="skeleton-controls">
-                    <div class="skeleton-control"></div>
-                    <div class="skeleton-control"></div>
-                </div>
-                <div class="skeleton-row"></div>
-                <div class="skeleton-row"></div>
-                <div class="skeleton-row"></div>
-                <div class="skeleton-row"></div>
-                <div class="skeleton-row"></div>
-            </div>
-        `;
-
         if (this.component.shadowRoot) {
-            if (workShiftElement) {
-                workShiftElement.style.display = 'none';
-            }
-            this.component.shadowRoot.appendChild(loadingElement);
+            const loadingElement = this.view.renderLoading();
+            this.component.shadowRoot.appendChild(loadingElement)
         } else {
             console.error('shadowRoot가 없습니다');
         }

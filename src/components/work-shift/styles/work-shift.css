@@ -204,3 +204,54 @@ input[type="date"] {
     border-radius: 4px;
     background: #f5f5f5;
 }
+
+/* 로딩 스켈레톤 스타일 */
+.loading-skeleton {
+    margin: 20px;
+    width: calc(100% - 40px);
+}
+
+.skeleton-table {
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.skeleton-header {
+    height: 55px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+.skeleton-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.skeleton-control {
+    height: 43px;
+    width: 120px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.skeleton-row {
+    height: 51px;
+    margin: 0;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-bottom: 1px solid #ddd;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
