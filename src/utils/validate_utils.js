@@ -57,3 +57,14 @@ export const isValidYYYY년_MM월_DD일 = (dateStr) => {
            date.getMonth() === parseInt(month, 10) - 1 &&
            date.getDate() === parseInt(day, 10);
 }
+
+/**
+ * 근무자 데이터가 비어있는지 확인하는 함수
+ * @param {{
+ *  [key: string]: string[]
+ * }} workers - 근무자 데이터
+ * @returns {boolean} 비어있으면 true, 아니면 false
+ */
+export const isEmptyWorkers = (workers) => {
+    return !workers || !Object.keys(workers).some(key => workers[key].length > 0);
+}

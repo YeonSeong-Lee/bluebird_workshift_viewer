@@ -181,12 +181,23 @@ input[type="date"] {
 
 .settings-item {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .settings-item label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
+}
+
+.settings-item-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.settings-item-action-button {
+    margin-left: 10px;
 }
 
 .file-path-container {

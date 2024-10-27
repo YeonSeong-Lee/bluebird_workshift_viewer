@@ -30,7 +30,7 @@ export class WorkShiftView {
         return container;
     }
 
-    renderSettingHeader(date, teamNames = []) {
+    renderSettingHeader(date='', teamNames) {
         return `
             <tr id="setting-header">
                 ${this.renderTeamFilter(teamNames)}
@@ -89,18 +89,19 @@ export class WorkShiftView {
     renderError(error) {
         const container = document.createElement('div');
         container.classList.add('work-shift');
+
         container.innerHTML = `
             <table>
                 ${this.renderTitle('에러 페이지')}
-                ${this.renderDateInputForm()}
+                ${this.renderSettingHeader()}
                 <tr>
-                    <td><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
+                    <td colspan="2" style="text-align: center;"><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
                 </tr>
                 <tr>
-                    <td style="color: red; white-space: pre-line; text-align: center;">${error}</td>
+                    <td colspan="2" style="color: red; white-space: pre-line; text-align: center;">${error}</td>
                 </tr>
                 <tr>
-                    <td>
+                    <td style="text-align: right;" colspan="2">
                         <button id="change-excel">엑셀 파일 변경</button>
                     </td>
                 </tr>
@@ -126,8 +127,8 @@ export class WorkShiftView {
                                     value="${localStorage.getItem('EXCEL_FILE_PATH') || ''}">
                                 <button id="change-excel">변경</button>
                             </div>
+                        </div>
                         <br/>
-                        <div>
                         <div class="settings-item">
                             <label>가져올 개월 수</label>
                             <div class="month-config-container">
@@ -137,9 +138,8 @@ export class WorkShiftView {
                                 <button id="save-month-count">저장</button>
                             </div>
                         </div>
-                        </div>
+                        <label>팀 설정</label>
                         <div class="settings-item">
-                            <label>팀 설정</label>
                             ${(() => {
                                 try {
                                     const teamConfig = JSON.parse(localStorage.getItem('TEAM_CONFIG'));
@@ -148,12 +148,11 @@ export class WorkShiftView {
                                     return `<textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;"></textarea>`;
                                 }
                             })()}
-                            <div style="margin-top: 10px;">
-                                <button id="save-team-config">저장</button>
-                                <button id="reset-team-config">초기화</button>
                             </div>
-                        </div>
-                        </div>
+                            <div class="settings-item-actions" style="margin-top: 10px;">
+                                <button id="reset-team-config" class="settings-item-action-button">초기화</button>
+                                <button id="save-team-config" class="settings-item-action-button">저장</button>
+                            </div>
                     </div>
                 </div>
             </div>

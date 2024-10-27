@@ -1,3 +1,5 @@
+import { isEmptyWorkers } from '../../utils/validate_utils.js';
+
 export class WorkShiftController {
     constructor(component, view, service) {
         // view가 제대로 전달되었는지 확인
@@ -140,7 +142,13 @@ export class WorkShiftController {
             const table = container.querySelector('table');
             const oldWorkersList = table.querySelectorAll('tr:not(thead tr):not(#setting-header)');
             oldWorkersList.forEach(tr => tr.remove());
-            const filteredWorkers = this.service.filterWorkersByTeam(workers, this.component.shadowRoot.querySelector('#team-filter')?.value || 'all');
+            const teamName = this.component.shadowRoot.querySelector('#team-filter')?.value || 'all';
+            const filteredWorkers = this.service.filterWorkersByTeam(workers, teamName);
+            console.log('filteredWorkers', filteredWorkers);
+            if (isEmptyWorkers(filteredWorkers)) {
+                this.updateErrorView(`${teamName} 팀에 속한 데이터가 없습니다.\n 설정에서 팀 설정이나 엑셀 파일을 확인해주세요.`);
+                return;
+            }
             const newWorkersList = this.view.renderWorkersList(filteredWorkers);
             table.insertAdjacentHTML('beforeend', newWorkersList);
         } catch (error) {
