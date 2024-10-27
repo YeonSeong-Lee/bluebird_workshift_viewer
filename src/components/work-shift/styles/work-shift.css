@@ -185,7 +185,7 @@ input[type="date"] {
     justify-content: space-between;
 }
 
-.settings-item label {
+.modal-body label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
