@@ -157,6 +157,7 @@ export class WorkShiftController {
             const filePath = await window.electronAPI.open_file_dialog();
             localStorage.setItem('EXCEL_FILE_PATH', filePath);
             window.electronAPI.set_file_path(filePath);
+            alert(`엑셀 파일 경로가 ${filePath}로 변경되었습니다.`);
             location.reload();
         } finally {
             this.hideLoading();
