@@ -9,8 +9,14 @@ export class WorkShiftView {
      * @param {string[]} teamNames - 팀 이름 목록
      */
     render(date, workers, teamNames) {
-        if (!workers) {
+        if (!date) {
+            throw new Error("날짜 정보가 없습니다.");
+        }
+        if (!workers || Object.keys(workers).length === 0) {
             throw new Error("근무자 정보가 없습니다.");
+        }
+        if (!teamNames || teamNames.length === 0) {
+            throw new Error("팀 정보가 없습니다.");
         }
         return this.renderShiftTable(date, workers, teamNames);
     }
