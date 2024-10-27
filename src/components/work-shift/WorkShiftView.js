@@ -121,7 +121,9 @@ export class WorkShiftView {
                     </div>
                     <div class="modal-body">
                         <div class="settings-item">
-                            <label>엑셀 파일 경로</label>
+                            <span>
+                                엑셀 파일 경로
+                            </span>
                             <div class="file-path-container">
                                 <input type="text" id="excel-path" readonly 
                                     value="${localStorage.getItem('EXCEL_FILE_PATH') || ''}">
@@ -130,22 +132,22 @@ export class WorkShiftView {
                         </div>
                         <br/>
                         <div class="settings-item">
-                            <label>가져올 개월 수</label>
+                            <span>가져올 최대 개월 수</span>
                             <div class="month-config-container">
-                                <input type="number" id="month-count" min="1" max="42" 
+                                <input type="number" id="month-count" min="1" max="142" 
                                     value="${localStorage.getItem('MONTH_COUNT') || '3'}">
                                 <span style="margin-left: 5px;">개월</span>
                                 <button id="save-month-count">저장</button>
                             </div>
                         </div>
-                        <label>팀 설정</label>
+                        <span>팀 설정</span>
                         <div class="settings-item">
                             ${(() => {
                                 try {
                                     const teamConfig = JSON.parse(localStorage.getItem('TEAM_CONFIG'));
-                                    return `<textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;">${ JSON.stringify(teamConfig, null, 2) }</textarea>`;
+                                    return `<textarea id="team-config" rows="10">${ JSON.stringify(teamConfig, null, 2) }</textarea>`;
                                 } catch (e) {
-                                    return `<textarea id="team-config" rows="10" style="width: 100%; margin-top: 10px;"></textarea>`;
+                                    return `<textarea id="team-config" rows="10"></textarea>`;
                                 }
                             })()}
                             </div>
