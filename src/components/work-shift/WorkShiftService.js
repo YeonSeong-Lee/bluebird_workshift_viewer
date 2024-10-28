@@ -1,10 +1,9 @@
 import teamConfig from '../../../team.config.js';
 import { convertToYYMM } from '../../utils/dates_utils.js';
 import { isValidYYYY년_MM월_DD일 } from '../../utils/validate_utils.js';
-import { getAllTeamNames, findDepartments } from '../../utils/extract_utils.js';
+import { getAllTeamNames, getAllWorkerNames, findDepartments } from '../../utils/extract_utils.js';
 
 const START_NAME_ROW = 4;
-const WORK_NUM = 30;
 
 export class WorkShiftService {
     static config = {
@@ -13,6 +12,7 @@ export class WorkShiftService {
         teamConfig: {},
         originalTeamConfig: JSON.stringify(teamConfig),
         teamNames: getAllTeamNames(teamConfig),
+        workerNames: getAllWorkerNames(teamConfig),
     }
 
     static async fetch_xlsx() {
@@ -36,13 +36,16 @@ export class WorkShiftService {
                 }
                 for (let i = 2; i < tab.data[1].length; i++) {
                     const row = [];
-                    for (let j = START_NAME_ROW; j < START_NAME_ROW + WORK_NUM; j++) {
+                    for (let j = START_NAME_ROW; j < tab.data.length; j++) {
                         if (!tab.data[j][i] || !tab.data[j][i].value) {
                             continue;
                         }
                         const temp = { name: tab.data[j][1].value, value: tab.data[j][i].value };
                         if (tab.data[j][i].style?.fill?.fgColor?.argb === 'FFFFFF00') {
                             temp['노D'] = true;
+                        }
+                        if (!this.config.workerNames.includes(temp.name)) {
+                            continue;
                         }
                         temp['team'] = findDepartments(temp.name, JSON.parse(this.config.teamConfig));
                         row.push(temp);
