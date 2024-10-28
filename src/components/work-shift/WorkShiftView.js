@@ -22,7 +22,7 @@ export class WorkShiftView {
     }
 
     renderShiftTable(date, workers, teamNames) {
-        const today = new Date(date).toLocaleDateString('kr', { month: '2-digit', day: "2-digit" });
+        const today = new Date(date).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
         const container = document.createElement('div');
         container.classList.add('work-shift');
         container.innerHTML = `
