@@ -120,6 +120,9 @@ export class WorkShiftController {
                 throw new Error("뷰를 찾는데 실패");
             }
             const workers = await this.service.getWorkersByDate(date);
+            if (isEmptyWorkers(workers)) {
+                throw new Error("😵‍💫 근무자가 존재하지 않습니다. 팀설정이나 엑셀파일을 확인해주세요.")
+            }
             const container = this.view.render(date, workers, this.service.config.teamNames);
             
             const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
