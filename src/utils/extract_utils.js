@@ -79,3 +79,33 @@ export const getAllTeamNames = (teamConfig) => {
         return [];
     }
 }
+
+/**
+ * 팀 설정에서 모든 근무자 이름을 추출하는 함수
+ * @param {object} teamConfig - 팀 설정 객체
+ * @returns {string[]} 모든 근무자 이름 배열
+ */
+export const getAllWorkerNames = (teamConfig) => {
+    if (!teamConfig) {
+        return [];
+    }
+    const workers = new Set();
+
+    const extractWorkers = (obj) => {
+        for (const key in obj) {
+            if (Array.isArray(obj[key])) {
+                obj[key].forEach(worker => workers.add(worker));
+            } else if (typeof obj[key] === 'object') {
+                extractWorkers(obj[key]);
+            }
+        }
+    };
+
+    try {
+        extractWorkers(teamConfig);
+        return Array.from(workers);
+    } catch (error) {
+        console.error('근무자 이름 추출 중 오류 발생:', error);
+        return [];
+    }
+}

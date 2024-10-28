@@ -1,4 +1,4 @@
-import { findDepartments, getAllTeamNames } from '../extract_utils';
+import { findDepartments, getAllTeamNames, getAllWorkerNames } from '../extract_utils';
 
 
 describe('findDepartments', () => {
@@ -82,5 +82,43 @@ describe('getAllTeamNames', () => {
             }
         };
         expect(getAllTeamNames(mockTeamConfig)).toEqual(["부서1", "팀1"]);
+    });
+});
+
+describe('getAllWorkerNames', () => {
+    test('returns all worker names', () => {
+        const mockTeamConfig = {
+            "부서1": {
+                "팀1": {
+                    "소팀1": ["직원1", "직원2"]
+                },
+                "팀2": ["직원3"]
+            },
+            "부서2": {
+                "팀3": ["직원4"]
+            }
+        };
+        expect(getAllWorkerNames(mockTeamConfig)).toEqual(["직원1", "직원2", "직원3", "직원4"]);
+    });
+
+    test('returns empty array if teamConfig is empty', () => {
+        const mockTeamConfig = {};
+        expect(getAllWorkerNames(mockTeamConfig)).toEqual([]);
+    });
+
+    test('returns empty array if teamConfig is null', () => {
+        const mockTeamConfig = null;
+        expect(getAllWorkerNames(mockTeamConfig)).toEqual([]);
+    });
+
+    test('handles nested structure correctly', () => {
+        const mockTeamConfig = {
+            "부서1": {
+                "팀1": {
+                    "소팀1": ["직원1"]
+                }
+            }
+        };
+        expect(getAllWorkerNames(mockTeamConfig)).toEqual(["직원1"]);
     });
 });
