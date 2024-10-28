@@ -92,3 +92,6 @@ typings/
 out/
 
 team.config.js
+
+build/
+dist/
