@@ -78,15 +78,15 @@ export class WorkShiftView {
             ${this.renderWorkerGroup('D', workers.day_worker)}
             ${this.renderWorkerGroup('E', workers.evening_worker)}
             ${this.renderWorkerGroup('N', workers.night_worker)}
-            ${this.renderWorkerGroup('OFF', workers.off_worker)}
+            ${this.renderWorkerGroup('OFF', workers.off_worker, 'D, E, N에 속하지 않는 모든 근무자')}
         `;
     }
 
-    renderWorkerGroup(title, workers) {
+    renderWorkerGroup(title, workers, tooltip='') {
         if (!workers?.length) return '';
         return `
             <tr>
-                <td class="shift-type">${title}</td>
+                <td class="shift-type ${tooltip ? 'tooltip' : ''}" tooltip="${tooltip}">${title}</td>
                 <td class="worker-list">${workers.map(w => w.name).join(', ')}</td>
             </tr>
         `;
