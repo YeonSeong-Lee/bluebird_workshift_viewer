@@ -140,7 +140,6 @@ export class WorkShiftController {
     }
 
     async handleTeamFilterChange() {
-        this.showLoading();
         try {
             const workers = await this.service.getWorkersByDate(this.currentDate);
             const container = this.component.shadowRoot.querySelector('.work-shift');
@@ -159,13 +158,10 @@ export class WorkShiftController {
         } catch (error) {
             console.error('handleTeamFilterChange error', error);
             await this.updateErrorView(error);
-        } finally {
-            this.hideLoading();
         }
     }
 
     async handleExcelChange() {
-        this.showLoading();
         try {
             const filePath = await window.electronAPI.open_file_dialog();
             localStorage.setItem('EXCEL_FILE_PATH', filePath);
