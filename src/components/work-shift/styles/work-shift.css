@@ -71,10 +71,15 @@ tr td {
     text-align: right;
 }
 
+#reset-shift, #team-filter {
+    height: 2.5rem;  /* 두 요소의 높이를 동일하게 설정 */
+}
+
 #date-input {
     background-color: white;
+    height: 22px;
     border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 8px 15px;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -88,22 +93,32 @@ tr td {
 }
 
 #reset-shift {
-    background: linear-gradient(to right, #4a90e2, #357abd);
-    border-radius: 6px;
-    padding: 8px 20px;
-    font-weight: 500;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
     transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#reset-shift:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+    outline: none;
 }
 
 #reset-shift:hover {
     background-color: #0056b3;
+    color: white;
+    outline: none;
 }
 
 /* 팀 필터 셀렉트 박스 스타일링 */
 #team-filter {
     background-color: white;
     border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 8px 15px;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -114,15 +129,6 @@ tr td {
     border-color: #4a90e2;
     box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
     outline: none;
-}
-
-button, input[type="reset"] {
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-input[type="date"] {
-    padding: 5px;
 }
 
 .settings-button {
