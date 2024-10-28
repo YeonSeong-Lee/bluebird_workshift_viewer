@@ -196,6 +196,7 @@ export class WorkShiftController {
         try {
             await this.setConfig({ ...this.service.config, monthCount });
             alert(`가지고 올 수 있는 최대 월 수를 ${monthCount}로 변경했습니다.`);
+            location.reload();
         } catch (error) {
             console.error('saveMonthCount error', error);
             await this.updateErrorView(error);
@@ -215,6 +216,7 @@ export class WorkShiftController {
         try {
             await this.setConfig({ ...this.service.config, teamConfig: JSON.stringify(JSON.parse(newTeamConfig)) });
             alert('팀 설정이 변경되었습니다.');
+            location.reload();
         } catch (error) {
             console.error('saveTeamConfig error', error);
             await this.updateErrorView(error);
