@@ -15,11 +15,11 @@ export class WorkShiftController {
 
     async init() {
         this.showLoading();
+        this.setupEventListeners();
         try {
             await this.loadAndSetConfig();
             await this.fetch();
             await this.updateView(this.currentDate);
-            this.setupEventListeners();
         } catch (error) {
             console.error('init error', error)
             await this.updateErrorView(error);
@@ -47,6 +47,7 @@ export class WorkShiftController {
     }
 
     setupEventListeners() {
+        console.log('setupEventListeners')
         this.component.shadowRoot.addEventListener('click', async (event) => {
             if (event.target.id === 'reset-shift') {
                 this.currentDate = new Date().toISOString().split('T')[0];
@@ -104,6 +105,7 @@ export class WorkShiftController {
         const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
         if (existingContainer) {
             existingContainer.replaceWith(container);
+            this.setupEventListeners();
         } else {
             this.component.shadowRoot.appendChild(container);
         }
