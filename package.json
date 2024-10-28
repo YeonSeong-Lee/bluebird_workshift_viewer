@@ -5,38 +5,51 @@
   "description": "파랑새둥지 근무표 Viewer",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "build": "electron-builder",
+    "start": "electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
     "lint": "echo \"No linting configured\"",
     "test": "jest",
     "test:watch": "jest --watch"
   },
   "build": {
     "appId": "com.bluebird.work-shift",
+    "copyright": "Copyright 2024 이성연",
+    "publish": {
+      "provider": "github"
+    },
+    "mac": {
+      "icon": "blue-bird.png",
+      "target": "dmg"
+    },
     "win": {
       "icon": "blue-bird.png",
       "target": "nsis"
+    },
+    "directories": {
+      "output": "dist"
     }
   },
   "devDependencies": {
     "@babel/core": "^7.25.9",
     "@babel/preset-env": "^7.25.9",
-    "@electron-forge/cli": "^7.4.0",
-    "@electron-forge/maker-deb": "^7.4.0",
-    "@electron-forge/maker-rpm": "^7.4.0",
-    "@electron-forge/maker-squirrel": "^7.4.0",
-    "@electron-forge/maker-zip": "^7.4.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
-    "@electron-forge/plugin-fuses": "^7.4.0",
-    "@electron/fuses": "^1.8.0",
     "electron": "32.1.0",
+    "electron-builder": "^25.1.8",
     "jest": "^29.7.0"
   },
-  "keywords": [],
+  "keywords": [
+    "electron",
+    "workshift",
+    "viewer",
+    "근무표"
+  ],
   "author": {
     "name": "YeonSeong-Lee",
-    "email": "abc@def.com"
+    "email": "yeonseong.dev@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YeonSeong-Lee/bluebird_workshift_viewer.git"
   },
   "license": "MIT",
   "dependencies": {
