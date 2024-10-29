@@ -59,6 +59,9 @@ export class WorkShiftService {
 
             localStorage.setItem('parsed_data_by_date', JSON.stringify(parsed_data_by_date));
         } catch (error) {
+            if (error.message.includes('TypeError: Cannot read properties of undefined (reading \'company\')')) {
+                throw new Error('엑셀이 아닌 다른 프로그램에서 열었을 때 발생하는 오류입니다. 엑셀 프로그램에서 열어서 저장 후 다시 시도해주세요.');
+            }
             console.error("Error fetching Excel data:", error);
             throw error;
         }
