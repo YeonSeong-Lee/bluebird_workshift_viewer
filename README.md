@@ -46,7 +46,23 @@
    ```bash
    npm install
    ```
-4. 애플리케이션을 실행합니다.
+4. team.config.example.js를 참고하여 team.config.js 파일을 생성합니다.
+   ```bash
+   cp team.config.example.js team.config.js
+   ```
+5. team.config.js 파일을 자신의 팀 구성에 맞게 수정합니다.
+   ```javascript
+   // team.config.js 예시
+   const teamConfig = {
+     "팀1": ["직원1", "직원2"],
+     "팀2": {
+       "팀장": ["팀장1"],
+       "팀원": ["직원3", "직원4"]
+     }
+   }
+   ```
+
+6. 애플리케이션을 실행합니다.
    ```bash
    npm start
    ```
