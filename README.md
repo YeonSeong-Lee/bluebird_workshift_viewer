@@ -1,10 +1,25 @@
-# 문제정의
-기존 근무표시트는 특정 날짜에 근무하는 근무자의 현황을 파악하기 쉽지 않습니다.
-![image](image)
+<p align="center">
+  <img src="blue-bird.png" alt="logo" height="200px" width="200px">
+  <h2 align="center">파랑새둥지 근무표 Viewer</h2>
+</p>
 
-# 해결책
-기존 근무표시트를 파싱하여 날짜별로 근무자를 보여주는 시스템을 개발하였습니다.
-![image](image)
+---
+
+<p align="center">
+  <h1>문제정의</h1>
+  기존 근무표시트는 특정 날짜에 근무하는 근무자의 현황을 파악하기 쉽지 않습니다.
+  <br>
+  <img src="https://github.com/user-attachments/assets/f31d9812-ac1c-4d5b-a968-edf0b231b8dc" alt="기존_근무표">
+</p>
+
+<p align="center">
+  <h1>해결책</h1>
+  날짜별, 팀별로 근무자를 보여주는 Viewer를 통해 쉽게 근무자 파악 할 수 있습니다.
+  <br>
+  <img src="https://github.com/user-attachments/assets/76e4c04e-10df-4262-80cb-c514a67c8789" alt="work_shift_demo">
+</p>
+
+---
 
 # 기능
 - **근무자 정보 파싱**: Excel 파일에서 근무자 정보를 읽어와 날짜별로 정리합니다.
@@ -15,9 +30,8 @@
 
 # 기술 스택
 | 기술 스택 | 설명 | 선택 이유 |
-|-----------|------|-----------|
+|:-----------:|:------:|:-----------:|
 | **Electron** <br/> <img src="https://www.electronjs.org/assets/img/logo.svg" width="50" height="50" alt="Electron Logo"> | 데스크톱 애플리케이션 프레임워크 | - 웹 기술(HTML, CSS, JS)로 크로스 플랫폼 데스크톱 앱 개발 가능<br/>- 로컬 파일 시스템 접근이 용이함<br/>- 빠른 개발과 배포가 가능함 |
-
 
 # 설치 및 실행
 1. 저장소를 클론합니다.
@@ -37,9 +51,11 @@
    npm start
    ```
 
-# 사용법
+# 주요기능
 - **Excel 파일 선택**: 설정 메뉴에서 Excel 파일을 선택하여 근무자 정보를 불러옵니다.
+- **Excel 업데이트 자동 반영**: 해당 Excel 파일이 변경되면 근무자 정보도 자동 갱신됩니다.
 - **날짜 선택**: 날짜 입력 폼을 통해 원하는 날짜를 선택합니다.
 - **팀 필터링**: 팀 필터 드롭다운을 사용하여 특정 팀의 근무자만 볼 수 있습니다.
 
+# 어플리케이션 사용법
 어플리케이션 사용법은 [사용법 안내](https://github.com/YeonSeong-Lee/bluebird_workshift_viewer/wiki/%EC%82%AC%EC%9A%A9%EB%B2%95-%EC%95%88%EB%82%B4)을 참고해주세요.
