@@ -1,4 +1,4 @@
-import { isEmptyWorkers } from '../../utils/validate_utils.js';
+import { isEmptyWorkers, isEmptyString } from '../../utils/validate_utils.js';
 
 export class WorkShiftController {
     constructor(component, view, service) {
@@ -47,7 +47,6 @@ export class WorkShiftController {
     }
 
     setupEventListeners() {
-        console.log('setupEventListeners')
         this.component.shadowRoot.addEventListener('click', async (event) => {
             if (event.target.id === 'reset-shift') {
                 this.currentDate = new Date().toISOString().split('T')[0];
@@ -148,7 +147,6 @@ export class WorkShiftController {
             oldWorkersList.forEach(tr => tr.remove());
             const teamName = this.component.shadowRoot.querySelector('#team-filter')?.value || 'all';
             const filteredWorkers = this.service.filterWorkersByTeam(workers, teamName);
-            console.log('filteredWorkers', filteredWorkers);
             if (isEmptyWorkers(filteredWorkers)) {
                 this.updateErrorView(`${teamName} 팀에 속한 데이터가 없습니다.\n 설정에서 팀 설정이나 엑셀 파일을 확인해주세요.`);
                 return;
@@ -180,12 +178,13 @@ export class WorkShiftController {
     async setConfig(config) {
         this.service.config = config;
         localStorage.setItem('EXCEL_FILE_PATH', config.excelPath);
+        await window.electronAPI.set_file_path(config.excelPath);
         localStorage.setItem('MONTH_COUNT', config.monthCount);
-        localStorage.setItem('TEAM_CONFIG', (config.teamConfig === '' || config.teamConfig === 'undefined' || config.teamConfig === 'null') ? this.service.config.originalTeamConfig : config.teamConfig);
+        localStorage.setItem('TEAM_CONFIG', isEmptyString(config.teamConfig) ? this.service.config.originalTeamConfig : config.teamConfig);
     }
 
     async loadAndSetConfig() {
-        const excelPath = localStorage.getItem('EXCEL_FILE_PATH');
+        const excelPath = !isEmptyString(localStorage.getItem('EXCEL_FILE_PATH')) ? localStorage.getItem('EXCEL_FILE_PATH') : this.service.config.excelPath;
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         let teamConfig = localStorage.getItem('TEAM_CONFIG');
         await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig });

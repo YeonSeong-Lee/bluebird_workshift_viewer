@@ -68,3 +68,7 @@ export const isValidYYYY년_MM월_DD일 = (dateStr) => {
 export const isEmptyWorkers = (workers) => {
     return !workers || !Object.keys(workers).some(key => workers[key].length > 0);
 }
+
+export const isEmptyString = (str) => {
+    return !str || str.trim() === '' || str === 'undefined' || str === 'null';
+}

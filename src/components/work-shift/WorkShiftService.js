@@ -16,7 +16,7 @@ export class WorkShiftService {
     }
 
     static async fetch_xlsx() {
-        const EXCEL_FILE_PATH = localStorage.getItem('EXCEL_FILE_PATH');
+        const EXCEL_FILE_PATH = this.config.excelPath;
         try {
             const raw_data = await window.electronAPI.fetch_xlsx(EXCEL_FILE_PATH, this.config.monthCount);
             console.log('raw_data', raw_data)
