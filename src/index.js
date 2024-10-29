@@ -8,10 +8,25 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+const gotTheLock = app.requestSingleInstanceLock();
 
-const createWindow = () => {
+let mainWindow;
+
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // 두 번째 인스턴스가 실행되려고 할 때 기존 창을 포커스합니다.
+    if (mainWindow) {
+      if (mainWindow.isMinimized() || !mainWindow.isVisible()) mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+}
+
+  const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 700,
     webPreferences: {
