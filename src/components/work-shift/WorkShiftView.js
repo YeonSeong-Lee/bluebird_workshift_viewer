@@ -74,10 +74,10 @@ export class WorkShiftView {
 
     renderWorkersList(workers) {
         return `
-            ${this.renderWorkerGroup('노D', workers.yellow_workers)}
-            ${this.renderWorkerGroup('D', workers.day_worker)}
-            ${this.renderWorkerGroup('E', workers.evening_worker)}
-            ${this.renderWorkerGroup('N', workers.night_worker)}
+            ${this.renderWorkerGroup('노D', workers.yellow_workers, 'D, E 근무자중 노란색으로 칠해진 근무자')}
+            ${this.renderWorkerGroup('D', workers.day_worker, '근무표에 D가 포함된 근무자')}
+            ${this.renderWorkerGroup('E', workers.evening_worker, '근무표에 E가 포함된 근무자')}
+            ${this.renderWorkerGroup('N', workers.night_worker, '근무표에 N이 포함된 근무자')}
             ${this.renderWorkerGroup('OFF', workers.off_worker, 'D, E, N에 속하지 않는 모든 근무자')}
         `;
     }
