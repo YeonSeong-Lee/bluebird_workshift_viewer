@@ -75,3 +75,12 @@
 
 # 어플리케이션 사용법
 어플리케이션 사용법은 [사용법 안내](https://github.com/YeonSeong-Lee/bluebird_workshift_viewer/wiki/%EC%82%AC%EC%9A%A9%EB%B2%95-%EC%95%88%EB%82%B4)을 참고해주세요.
+
+# 라이센스
+출처를 표기하는 한 모든 사용에 대해 허락합니다.
+
+# 질문 및 건의사항
+ 깃허브 이슈나 `yeonseong.dev@gmail.com`으로 연락주세요.
+
+# 근무표 도입 문의
+ 사회복지시설에서 근무표 viewer를 도입하고 싶다면 `yeonseong.dev@gmail.com`으로 연락주시면 성심껏 도와드리겠습니다.
