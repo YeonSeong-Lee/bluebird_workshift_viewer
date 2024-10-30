@@ -7,7 +7,7 @@ const START_NAME_ROW = 4;
 
 export class WorkShiftService {
     static config = {
-        excelPath: '\\server\지원팀 공유 파일\근무표.xlsx',
+        excelPath: '가지고 올 파일 엑셀 파일 경로',
         monthCount: 3,
         teamConfig: {},
         originalTeamConfig: JSON.stringify(teamConfig),
