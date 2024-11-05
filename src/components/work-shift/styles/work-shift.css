@@ -116,6 +116,17 @@ tr td {
     outline: none;
 }
 
+#reset-shift.highlight {
+    background-color: #4a90e2;
+    color: white;
+    border-color: #357abd;
+}
+
+#reset-shift.highlight:hover {
+    background-color: #357abd;
+    border-color: #2e6da4;
+}
+
 /* 팀 필터 셀렉트 박스 스타일링 */
 #team-filter {
     background-color: white;

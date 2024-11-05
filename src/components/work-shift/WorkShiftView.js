@@ -62,11 +62,14 @@ export class WorkShiftView {
     }
 
     renderDateInputForm(date) {
+        const today = new Date().toISOString().split('T')[0];
+        const isNotToday = date !== today;
+        
         return `
             <td>
                 <form id="shift-form">
                     <input type="date" id="date-input" value="${date || ''}" />
-                    <input type="reset" id="reset-shift" value="오늘 근무" />
+                    <input type="reset" id="reset-shift" class="${isNotToday ? 'highlight' : ''}" value="오늘 근무" />
                 </form>
             </td>
         `;
