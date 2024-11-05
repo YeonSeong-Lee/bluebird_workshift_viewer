@@ -72,23 +72,25 @@ export class WorkShiftController {
                 this.closeSettingsModal();
             }
         });
+        // Use AbortController for cleanup
+        this.keydownController?.abort();
+        this.keydownController = new AbortController();
 
-        document.addEventListener('keydown', async (event) => {
-            if (event.key === 'Escape') {
-                this.closeSettingsModal();
-            } else if (event.key === 'ArrowLeft') {
-                const yesterday = new Date(this.currentDate);
-                yesterday.setDate(yesterday.getDate() - 1);
-                this.currentDate = convertToYYYYMMDD(yesterday);
-                await this.updateView(this.currentDate);
-                this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
-            } else if (event.key === 'ArrowRight') {
-                const tomorrow = new Date(this.currentDate);
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                this.currentDate = convertToYYYYMMDD(tomorrow);
-                await this.updateView(this.currentDate);
-                this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
+        const handleKeydown = async (event) => {
+            const keyHandlers = {
+                'Escape': () => this.closeSettingsModal(),
+                'ArrowLeft': () => this.navigateDate(-1),
+                'ArrowRight': () => this.navigateDate(1)
+            };
+
+            const handler = keyHandlers[event.key];
+            if (handler) {
+                await handler();
             }
+        };
+  
+        document.addEventListener('keydown', handleKeydown, { 
+            signal: this.keydownController.signal 
         });
         
         this.component.shadowRoot.addEventListener('change', async (event) => {
@@ -257,4 +259,14 @@ export class WorkShiftController {
         const teamConfig = this.component.shadowRoot.querySelector('#team-config');
         teamConfig.value = JSON.stringify(JSON.parse(this.service.config.originalTeamConfig), null, 2);
     }
+
+    async navigateDate (dayOffset) {
+        const date = new Date(this.currentDate);
+        date.setDate(date.getDate() + dayOffset);
+        
+        this.currentDate = convertToYYYYMMDD(date);
+        await this.updateView(this.currentDate);
+        this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
+    };
+
 }
