@@ -1,4 +1,5 @@
 import { isEmptyWorkers, isEmptyString } from '../../utils/validate_utils.js';
+import { convertToYYYYMMDD } from '../../utils/dates_utils.js';
 
 export class WorkShiftController {
     constructor(component, view, service) {
@@ -72,9 +73,21 @@ export class WorkShiftController {
             }
         });
 
-        document.addEventListener('keydown', (event) => {
+        document.addEventListener('keydown', async (event) => {
             if (event.key === 'Escape') {
                 this.closeSettingsModal();
+            } else if (event.key === 'ArrowLeft') {
+                const yesterday = new Date(this.currentDate);
+                yesterday.setDate(yesterday.getDate() - 1);
+                this.currentDate = convertToYYYYMMDD(yesterday);
+                await this.updateView(this.currentDate);
+                this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
+            } else if (event.key === 'ArrowRight') {
+                const tomorrow = new Date(this.currentDate);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                this.currentDate = convertToYYYYMMDD(tomorrow);
+                await this.updateView(this.currentDate);
+                this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
             }
         });
         
@@ -110,6 +123,10 @@ export class WorkShiftController {
         }
     }
 
+    /* @description 날짜 변경 시 호출되는 함수
+     * @param {string} date - 날짜
+     * @returns {Promise<void>}
+    */
     async updateView(date) {
         this.showLoading();
         try {
