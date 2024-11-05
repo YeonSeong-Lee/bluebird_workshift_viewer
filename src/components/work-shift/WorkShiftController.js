@@ -48,6 +48,11 @@ export class WorkShiftController {
     }
 
     setupEventListeners() {
+        // Remove any existing event listeners if they exist
+        if (this.eventListenersInitialized) {
+            return;
+        }
+
         this.component.shadowRoot.addEventListener('click', async (event) => {
             if (event.target.id === 'reset-shift') {
                 this.currentDate = new Date().toISOString().split('T')[0];
@@ -71,11 +76,15 @@ export class WorkShiftController {
             }
         });
 
-        this.component.shadowRoot.querySelector('#settings-modal')?.addEventListener('click', (event) => {
-            if (event.target.id === 'settings-modal') {
-                this.closeSettingsModal();
-            }
-        });
+        const settingsModal = this.component.shadowRoot.querySelector('#settings-modal');
+        if (settingsModal) {
+            settingsModal.addEventListener('click', (event) => {
+                if (event.target.id === 'settings-modal') {
+                    this.closeSettingsModal();
+                }
+            });
+        }
+
         // Use AbortController for cleanup
         this.keydownController?.abort();
         this.keydownController = new AbortController();
@@ -107,6 +116,9 @@ export class WorkShiftController {
                 await this.handleTeamFilterChange();
             }
         });
+
+        // Mark that event listeners have been initialized
+        this.eventListenersInitialized = true;
     }
 
     openSettingsModal() {
@@ -124,7 +136,6 @@ export class WorkShiftController {
         const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
         if (existingContainer) {
             existingContainer.replaceWith(container);
-            this.setupEventListeners();
         } else {
             this.component.shadowRoot.appendChild(container);
         }
