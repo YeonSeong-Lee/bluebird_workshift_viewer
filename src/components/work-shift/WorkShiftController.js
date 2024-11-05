@@ -52,6 +52,10 @@ export class WorkShiftController {
             if (event.target.id === 'reset-shift') {
                 this.currentDate = new Date().toISOString().split('T')[0];
                 await this.updateView(this.currentDate);
+            } else if (event.target.id === 'prev-date') {
+                await this.navigateDate(-1);
+            } else if (event.target.id === 'next-date') {
+                await this.navigateDate(1);
             } else if (event.target.id === 'change-excel') {
                 await this.handleExcelChange();
             } else if (event.target.id === 'open-settings') {
@@ -240,7 +244,7 @@ export class WorkShiftController {
         try {
             JSON.parse(newTeamConfig);
         } catch (error) {
-            alert('유효하지 않은 형식이라 저장할 수 없습니다. \n오류: ' + error.message);
+            alert('유효하지 않은 형식이라 저���할 수 없습니다. \n오류: ' + error.message);
             return;
         }
         try {

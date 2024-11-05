@@ -26,11 +26,15 @@ export class WorkShiftView {
         const container = document.createElement('div');
         container.classList.add('work-shift');
         container.innerHTML = `
-            <table>
-                ${this.renderTitle(`${today} 근무표`)}
-                ${this.renderSettingHeader(date, teamNames)}
-                ${this.renderWorkersList(workers)}
-            </table>
+            <div class="navigation">
+                <button id="prev-date" class="nav-button tooltip" tooltip="이전 날짜 (← 키)">◀</button>
+                <table class="work-shift-table">
+                    ${this.renderTitle(`${today} 근무표`)}
+                    ${this.renderSettingHeader(date, teamNames)}
+                    ${this.renderWorkersList(workers)}
+                </table>
+                <button id="next-date" class="nav-button tooltip" tooltip="다음 날짜 (→ 키)">▶</button>
+            </div>
             ${this.renderSettingsModal()}
         `;
         return container;

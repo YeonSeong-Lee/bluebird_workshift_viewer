@@ -10,7 +10,7 @@
     }
 }
 
-.work-shift {
+.work-shift-table {
     font-family: Arial, sans-serif;
     margin: 20px;
     opacity: 0;  /* 초기 상태는 투명하게 */
@@ -258,7 +258,8 @@ tr td {
 /* 로딩 스켈레톤 스타일 */
 .loading-skeleton {
     margin: 20px;
-    width: calc(100% - 40px);
+    margin-left: 50px;
+    width: calc(100% - 100px); /* 방향키 버튼 너비를 제외한 너비 설정 */
 }
 
 .skeleton-table {
@@ -307,24 +308,76 @@ tr td {
 }
 
 .tooltip {
-    position: relative; /* 툴팁 위치를 위한 상대 위치 설정 */
+    position: relative;
+    cursor: pointer;
 }
 
-.tooltip:hover::after {
+.tooltip::after {
     content: attr(tooltip);
     position: absolute;
-    top: 105%; /* 요소 바로 아래에 툴팁 표시 */
+    top: 105%;
     left: 0%;
     background-color: #333;
     color: #fff;
     padding: 5px 10px;
     border-radius: 4px;
+    font-size: 14px;
     white-space: nowrap;
-    z-index: 10;
+    z-index: 1000;
     opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
+/* 다음 날짜 버튼 툴팁 위치 조정 */
+#next-date::after {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+
 .tooltip:hover::after {
-    opacity: 1; /* hover 시 툴팁 표시 */
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 네비게이션 컨테이너 스타일 */
+.navigation {
+    display: flex;
+    justify-items: space-between;
+    align-items: center;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+/* 네비게이션 버튼 스타일 */
+.nav-button {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 16px;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-button:hover {
+    background-color: #f8f9fa;
+    border-color: #4a90e2;
+}
+
+.nav-button:active {
+    background-color: #e9ecef;
+}
+
+/* 테이블이 네비게이션 내부에서 확장되도록 설정 */
+.work-shift-table {
+    flex: 1;
 }
