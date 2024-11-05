@@ -9,6 +9,7 @@ export class WorkShiftService {
     static config = {
         excelPath: '가지고 올 파일 엑셀 파일 경로',
         monthCount: 3,
+        currentTabName: 'all',
         teamConfig: {},
         originalTeamConfig: JSON.stringify(teamConfig),
         teamNames: getAllTeamNames(teamConfig),

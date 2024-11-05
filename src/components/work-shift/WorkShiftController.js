@@ -97,6 +97,7 @@ export class WorkShiftController {
                 await this.updateView(this.currentDate);
             }
             else if (event.target.id === 'team-filter') {
+                this.service.config.currentTabName = event.target.value;
                 await this.handleTeamFilterChange();
             }
         });
@@ -122,7 +123,7 @@ export class WorkShiftController {
             this.component.shadowRoot.appendChild(container);
         }
     }
-
+    
     /* @description 날짜 변경 시 호출되는 함수
      * @param {string} date - 날짜
      * @returns {Promise<void>}
@@ -139,11 +140,22 @@ export class WorkShiftController {
             if (isEmptyWorkers(workers)) {
                 throw new Error("😵‍💫 근무자가 존재하지 않습니다. 팀설정이나 엑셀파일을 확인해주세요.")
             }
-            const container = this.view.render(date, workers, this.service.config.teamNames);
+
+            // 현재 선택된 팀으로 workers 필터링
+            const filteredWorkers = this.service.config.currentTabName === 'all' 
+                ? workers 
+                : this.service.filterWorkersByTeam(workers, this.service.config.currentTabName);
+
+            const container = this.view.render(date, filteredWorkers, this.service.config.teamNames);
             
             const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
             if (existingContainer) {
                 existingContainer.replaceWith(container);
+                // 팀 필터 선택값 복원
+                const teamFilter = this.component.shadowRoot.querySelector('#team-filter');
+                if (teamFilter) {
+                    teamFilter.value = this.service.config.currentTabName;
+                }
             } else {
                 this.component.shadowRoot.appendChild(container);
             }
