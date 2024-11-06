@@ -45,6 +45,8 @@ th, td {
 .header-text {
     display: inline-block;
     line-height: 2rem;  /* settings-button와 동일한 높이 */
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
 .shift-type {
