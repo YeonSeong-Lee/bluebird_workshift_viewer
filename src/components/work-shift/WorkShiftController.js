@@ -90,10 +90,12 @@ export class WorkShiftController {
         this.keydownController = new AbortController();
 
         const handleKeydown = async (event) => {
+            console.log('handleKeydown', `event.key: |${event.key}|`);
             const keyHandlers = {
                 'Escape': () => this.closeSettingsModal(),
                 'ArrowLeft': () => this.navigateDate(-1),
-                'ArrowRight': () => this.navigateDate(1)
+                'ArrowRight': () => this.navigateDate(1),
+                ' ': () => this.navigateDate(0),
             };
 
             const handler = keyHandlers[event.key];
@@ -275,7 +277,17 @@ export class WorkShiftController {
         teamConfig.value = JSON.stringify(JSON.parse(this.service.config.originalTeamConfig), null, 2);
     }
 
+    /* @description 날짜 변경 시 호출되는 함수
+     * @param {number} dayOffset - 변경할 날짜 오프셋, 0일 경우 오늘 날짜로 변경
+     * @returns {Promise<void>}
+    */
     async navigateDate (dayOffset) {
+        if (dayOffset === 0) {
+            this.currentDate = new Date().toISOString().split('T')[0];
+            this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
+            await this.updateView(this.currentDate);
+            return;
+        }
         const date = new Date(this.currentDate);
         date.setDate(date.getDate() + dayOffset);
         
