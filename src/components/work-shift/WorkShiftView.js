@@ -104,21 +104,25 @@ export class WorkShiftView {
         container.classList.add('work-shift');
 
         container.innerHTML = `
-            <table>
-                ${this.renderTitle('에러 페이지')}
-                ${this.renderSettingHeader()}
-                <tr>
-                    <td colspan="2" style="text-align: center;"><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="color: red; white-space: pre-line; text-align: center;">${error}</td>
-                </tr>
-                <tr>
-                    <td style="text-align: right;" colspan="2">
-                        <button id="change-excel">엑셀 파일 변경</button>
-                    </td>
-                </tr>
-            </table>
+            <div class="navigation">
+                <button id="prev-date" class="nav-button tooltip" tooltip="이전 날짜 (← 키)">◀</button>
+                <table>
+                    ${this.renderTitle('에러 페이지')}
+                    ${this.renderSettingHeader()}
+                    <tr>
+                        <td colspan="2" style="text-align: center;"><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="color: red; white-space: pre-line; text-align: center;">${error}</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: right;" colspan="2">
+                            <button id="change-excel">엑셀 파일 변경</button>
+                        </td>
+                    </tr>
+                </table>
+                <button id="next-date" class="nav-button tooltip" tooltip="다음 날짜 (→ 키)">▶</button>
+            </div>
             ${this.renderSettingsModal()}
         `;
         return container;

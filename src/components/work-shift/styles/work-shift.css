@@ -12,10 +12,10 @@
 
 .work-shift {
     min-width: 40rem;
+    margin: 20px;
 }
 
 .work-shift-table {
-    margin: 20px;
     opacity: 0;  /* 초기 상태는 투명하게 */
     animation: fadeIn 0.3s ease-out forwards;  /* forwards를 사용하여 애니메이션 마지막 상태 유지 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.42);  /* 그림자 더 진하게 */
@@ -354,6 +354,7 @@ tr td {
     align-items: center;
     margin-left: 9px;
     margin-right: 9px;
+    gap: 10px;
 }
 
 /* 네비게이션 버튼 스타일 */
