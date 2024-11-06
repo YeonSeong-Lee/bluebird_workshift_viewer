@@ -10,8 +10,11 @@
     }
 }
 
+.work-shift {
+    min-width: 40rem;
+}
+
 .work-shift-table {
-    font-family: Arial, sans-serif;
     margin: 20px;
     opacity: 0;  /* 초기 상태는 투명하게 */
     animation: fadeIn 0.3s ease-out forwards;  /* forwards를 사용하여 애니메이션 마지막 상태 유지 */
