@@ -262,9 +262,8 @@ tr td {
 
 /* 로딩 스켈레톤 스타일 */
 .loading-skeleton {
-    margin: 20px;
-    margin-left: 50px;
-    width: calc(100% - 100px); /* 방향키 버튼 너비를 제외한 너비 설정 */
+    min-width: 40rem;
+    width: 100%; /* 방향키 버튼 너비를 제외한 너비 설정 */
 }
 
 .skeleton-table {
