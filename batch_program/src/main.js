@@ -10,7 +10,7 @@ let mainWindow;
 let drive;
 let watcherInstance = null;
 
-async function createWindow() {
+const createWindow = async () => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
@@ -21,10 +21,9 @@ async function createWindow() {
   });
 
   mainWindow.loadFile('./src/index.html');
-}
+};
 
-function setupIpcHandlers() {
-  // 파일 선택 다이얼로그로 변경
+const setupIpcHandlers = () => {
   ipcMain.handle('select-file', async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
       properties: ['openFile'],
@@ -44,7 +43,6 @@ function setupIpcHandlers() {
     return null;
   });
 
-  // 수동 업로드 처리 수정
   ipcMain.handle('manual-upload', async (event, filePath) => {
     try {
       await uploadFile(filePath);
@@ -53,16 +51,14 @@ function setupIpcHandlers() {
       return { success: false, message: error.message };
     }
   });
-}
+};
 
-// 파일 감시 함수 수정
-function watchFile(filePath) {
+const watchFile = (filePath) => {
   if (watcherInstance) {
     watcherInstance.close();
   }
 
   try {
-    // 파일이 존재하는지 확인
     if (!fsSync.existsSync(filePath)) {
       throw new Error('파일이 존재하지 않습니다.');
     }
@@ -92,10 +88,9 @@ function watchFile(filePath) {
     mainWindow.webContents.send('watch-error', error.message);
     return false;
   }
-}
+};
 
-// Google Drive 초기화 함수 추가
-async function initializeGoogleDrive() {
+const initializeGoogleDrive = async () => {
   try {
     const auth = await authenticate({
       keyfilePath: path.join(__dirname, '../credentials.json'),
@@ -113,34 +108,9 @@ async function initializeGoogleDrive() {
     mainWindow.webContents.send('google-drive-error', error.message);
     return false;
   }
-}
+};
 
-app.whenReady().then(async () => {
-  await createWindow();
-  setupIpcHandlers();
-  
-  // Google Drive 초기화
-  const driveInitialized = await initializeGoogleDrive();
-  if (!driveInitialized) {
-    console.error('Failed to initialize Google Drive');
-    // 에러 메시지를 UI에 표시
-    mainWindow.webContents.send('initialization-error', 'Google Drive 초기화에 실패했습니다.');
-  }
-  
-  // 저장된 경로가 있다면 해당 경로로 감시 시작
-  mainWindow.webContents.on('did-finish-load', () => {
-    mainWindow.webContents.executeJavaScript(`
-      const savedPath = localStorage.getItem('watchPath');
-      if (savedPath) {
-        document.getElementById('watchPath').value = savedPath;
-        updateWatchDirectory(savedPath);
-      }
-    `);
-  });
-});
-
-// 파일 업로드 함수 수정
-async function uploadFile(filePath) {
+const uploadFile = async (filePath) => {
   try {
     const fileName = path.basename(filePath);
     const fileMetadata = {
@@ -149,7 +119,7 @@ async function uploadFile(filePath) {
 
     const media = {
       mimeType: 'application/octet-stream',
-      body: fsSync.createReadStream(filePath)  // fs.promises 대신 일반 fs 사용
+      body: fsSync.createReadStream(filePath)
     };
 
     const response = await drive.files.create({
@@ -162,6 +132,25 @@ async function uploadFile(filePath) {
   } catch (error) {
     console.error('Error uploading file:', error);
   }
-}
+};
 
-// ... rest of the main.js code ... 
+app.whenReady().then(async () => {
+  await createWindow();
+  setupIpcHandlers();
+  
+  const driveInitialized = await initializeGoogleDrive();
+  if (!driveInitialized) {
+    console.error('Failed to initialize Google Drive');
+    mainWindow.webContents.send('initialization-error', 'Google Drive 초기화에 실패했습니다.');
+  }
+  
+  mainWindow.webContents.on('did-finish-load', () => {
+    mainWindow.webContents.executeJavaScript(`
+      const savedPath = localStorage.getItem('watchPath');
+      if (savedPath) {
+        document.getElementById('watchPath').value = savedPath;
+        updateWatchDirectory(savedPath);
+      }
+    `);
+  });
+});
