@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>파일 자동 업로드</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .path-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .path-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+        }
+        .file-info {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>구글 드라이브 자동 업로드</h1>
+        
+        <div class="path-section">
+            <input type="text" id="watchPath" class="path-input" readonly>
+            <button onclick="selectFile()" class="button">파일 선택</button>
+        </div>
+
+        <div class="file-info" id="fileInfo"></div>
+
+        <button onclick="manualUpload()" class="button">지금 업로드</button>
+
+        <div class="status">
+            <p>선택된 파일이 변경될 때마다 자동으로 구글 드라이브에 업로드됩니다.</p>
+            <p>"지금 업로드" 버튼을 눌러 즉시 업로드할 수도 있습니다.</p>
+        </div>
+
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+        const path = require('path');
+
+        // 저장된 경로 불러오기
+        window.onload = function() {
+            const savedPath = localStorage.getItem('watchPath');
+            if (savedPath) {
+                document.getElementById('watchPath').value = savedPath;
+                updateFileInfo(savedPath);
+            }
+        }
+
+        // 파일 정보 업데이트
+        function updateFileInfo(filePath) {
+            const fileInfo = document.getElementById('fileInfo');
+            if (filePath) {
+                const fileName = path.basename(filePath);
+                fileInfo.textContent = `감시 중인 파일: ${fileName}`;
+            } else {
+                fileInfo.textContent = '';
+            }
+        }
+
+        // 파일 선택
+        async function selectFile() {
+            try {
+                const result = await ipcRenderer.invoke('select-file');
+                if (result && result.success) {
+                    document.getElementById('watchPath').value = result.path;
+                    localStorage.setItem('watchPath', result.path);
+                    updateFileInfo(result.path);
+                    showMessage('파일 감시가 시작되었습니다.', 'success');
+                } else if (result) {
+                    showMessage('파일 감시 설정에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showMessage('파일 선택 중 오류가 발생했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // 수동 업로드
+        async function manualUpload() {
+            const path = document.getElementById('watchPath').value;
+            if (!path) {
+                showMessage('먼저 파일을 선택해주세요.', 'error');
+                return;
+            }
+
+            try {
+                const result = await ipcRenderer.invoke('manual-upload', path);
+                showMessage(result.message, result.success ? 'success' : 'error');
+            } catch (error) {
+                showMessage('업로드 중 오류가 발생했습니다: ' + error.message, 'error');
+            }
+        }
+
+        // 에러 리스너
+        ipcRenderer.on('watch-error', (event, message) => {
+            showMessage('감시 오류: ' + message, 'error');
+        });
+
+        // 메시지 표시
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = type;
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = '';
+            }, 3000);
+        }
+    </script>
+</body>
+</html> 
