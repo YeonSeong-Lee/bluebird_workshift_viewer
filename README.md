@@ -3,7 +3,13 @@
   <h2 align="center">파랑새둥지 근무표 Viewer</h2>
 </p>
 
----
+<p align="center">
+  <a href="#문제정의">문제정의</a> | 
+  <a href="#해결책">해결책</a> | 
+  <a href="#기능">기능</a> | 
+  <a href="#기술-스택">기술 스택</a> | 
+  <a href="#설치-및-실행">설치 및 실행</a>
+</p>
 
 <p align="center">
   <h1>문제정의</h1>
