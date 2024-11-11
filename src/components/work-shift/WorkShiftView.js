@@ -110,7 +110,7 @@ export class WorkShiftView {
                     ${this.renderTitle('에러 페이지')}
                     ${this.renderSettingHeader()}
                     <tr>
-                        <td colspan="2" style="text-align: center;"><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요.</td>
+                        <td colspan="2" style="text-align: center;"><span style="color: #3498db;">ℹ️</span> 엑셀 파일 경로를 수정하거나 엑셀 파일에서 직접 수정해주세요. <br/> <span style="color: #3498db;">ℹ️</span> 팀 설정에 있는 근무자만 근무표에 표시됩니다.</td>
                     </tr>
                     <tr>
                         <td colspan="2" style="color: red; white-space: pre-line; text-align: center;">${error}</td>
