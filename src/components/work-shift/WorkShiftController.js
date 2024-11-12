@@ -114,6 +114,7 @@ export class WorkShiftController {
             }
             else if (event.target.id === 'team-filter') {
                 this.service.config.currentTabName = event.target.value;
+                localStorage.setItem('CURRENT_TAB_NAME', this.service.config.currentTabName);
                 await this.handleTeamFilterChange();
             }
         });
@@ -234,7 +235,8 @@ export class WorkShiftController {
         const excelPath = !isEmptyString(localStorage.getItem('EXCEL_FILE_PATH')) ? localStorage.getItem('EXCEL_FILE_PATH') : this.service.config.excelPath;
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         let teamConfig = localStorage.getItem('TEAM_CONFIG');
-        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig });
+        const currentTabName = localStorage.getItem('CURRENT_TAB_NAME') || 'all';
+        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig, currentTabName });
     }
 
     async saveMonthCount(event) {
