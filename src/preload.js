@@ -6,5 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   fetch_xlsx: (filePath, monthCount) => ipcRenderer.invoke('fetch_xlsx', filePath, monthCount),
   set_file_path: (filePath) => ipcRenderer.invoke('set_file_path', filePath),
   open_file_dialog: () => ipcRenderer.invoke('dialog:openFile'),
-  on: (channel, callback) => ipcRenderer.on(channel, callback)
+  on: (channel, callback) => ipcRenderer.on(channel, callback),
+  checkUpdates: () => ipcRenderer.invoke('check-updates'),
+  onUpdateMessage: (callback) => ipcRenderer.on('update-message', (_, message) => callback(message))
 });

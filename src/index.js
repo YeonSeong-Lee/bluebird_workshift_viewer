@@ -2,6 +2,8 @@ const { app, BrowserWindow, ipcMain, dialog } = require('electron');
 const ExcelJS = require('exceljs');
 const path = require('node:path');
 const chokidar = require('chokidar'); // Add chokidar
+const { autoUpdater } = require('electron-updater');
+
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -94,6 +96,53 @@ if (!gotTheLock) {
         ]
     });
     return result.filePaths;
+  });
+
+  // 자동 업데이트 체크 및 이벤트 핸들러
+  autoUpdater.checkForUpdatesAndNotify();
+
+  // 업데이트 진행상황 이벤트
+  autoUpdater.on('checking-for-update', () => {
+    mainWindow.webContents.send('update-message', '업데이트 확인 중...');
+  });
+
+  autoUpdater.on('update-available', (info) => {
+    mainWindow.webContents.send('update-message', '업데이트가 있습니다.');
+  });
+
+  autoUpdater.on('update-not-available', (info) => {
+    mainWindow.webContents.send('update-message', '현재 최신 버전입니다.');
+  });
+
+  autoUpdater.on('error', (err) => {
+    mainWindow.webContents.send('update-message', '업데이트 중 오류가 발생했습니다: ' + err);
+  });
+
+  autoUpdater.on('download-progress', (progressObj) => {
+    let message = `다운로드 속도: ${progressObj.bytesPerSecond}`;
+    message += ` - 진행률: ${progressObj.percent}%`;
+    message += ` (${progressObj.transferred}/${progressObj.total})`;
+    mainWindow.webContents.send('update-message', message);
+  });
+
+  autoUpdater.on('update-downloaded', (info) => {
+    mainWindow.webContents.send('update-message', '업데이트가 다운로드되었습니다.');
+    // 사용자에게 업데이트 설치 확인
+    dialog.showMessageBox({
+      type: 'info',
+      title: '업데이트 준비 완료',
+      message: '업데이트가 다운로드되었습니다. 지금 설치하시겠습니까?',
+      buttons: ['예', '아니오']
+    }).then((result) => {
+      if (result.response === 0) {
+        autoUpdater.quitAndInstall();
+      }
+    });
+  });
+
+  // 수동 업데이트 체크를 위한 IPC 핸들러
+  ipcMain.handle('check-updates', () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
 };
 

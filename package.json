@@ -55,6 +55,7 @@
   "dependencies": {
     "chokidar": "^4.0.1",
     "electron-squirrel-startup": "^1.0.1",
+    "electron-updater": "^6.3.9",
     "exceljs": "^4.4.0"
   },
   "jest": {
