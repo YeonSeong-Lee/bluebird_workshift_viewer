@@ -90,7 +90,6 @@ export class WorkShiftController {
         this.keydownController = new AbortController();
 
         const handleKeydown = async (event) => {
-            console.log('handleKeydown', `event.key: |${event.key}|`);
             const keyHandlers = {
                 'Escape': () => this.closeSettingsModal(),
                 'ArrowLeft': () => this.navigateDate(-1),
