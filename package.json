@@ -1,13 +1,15 @@
 {
   "name": "bluebird-work-shift",
   "productName": "파랑새둥지 근무표 Viewer",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "파랑새둥지 근무표 Viewer",
   "main": "src/index.js",
   "scripts": {
     "start": "electron .",
     "build:win": "electron-builder --win",
+    "deploy:win": "npm run build:win && electron-builder --publish always",
     "build:mac": "electron-builder --mac",
+    "deploy:mac": "npm run build:mac && electron-builder --publish always",
     "lint": "echo \"No linting configured\"",
     "test": "jest",
     "test:watch": "jest --watch"
