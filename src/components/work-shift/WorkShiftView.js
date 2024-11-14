@@ -56,9 +56,9 @@ export class WorkShiftView {
         return `
             <td>
                 <select id="team-filter">
-                <option value="all">전체</option>
+                <option value="all" ${localStorage.getItem('CURRENT_TEAM_FILTER') === 'all' ? 'selected' : ''}>전체</option>
                 ${teamNames.map(team => `
-                    <option value="${team}">${team}</option>
+                    <option value="${team}" ${localStorage.getItem('CURRENT_TEAM_FILTER') === team ? 'selected' : ''}>${team}</option>
                     `).join('')}
                 </select>
             </td>
