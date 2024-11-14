@@ -130,9 +130,10 @@ if (!gotTheLock) {
     // 사용자에게 업데이트 설치 확인
     dialog.showMessageBox({
       type: 'info',
-      title: `파랑새둥지 근무표 업데이트 준비 완료, ${app.getVersion()}`,
-      message: '업데이트가 다운로드되었습니다. 최신 버전으로 업데이트 하시겠습니까?',
-      buttons: ['예', '아니오']
+      title: `파랑새둥지 근무표 Viewer 업데이트 준비 완료, ${app.getVersion()}`,
+      message: '근무표 뷰어를 최신 버전으로 업데이트 하시겠습니까?',
+      buttons: ['예', '아니오'],
+      icon: path.join(__dirname, 'assets/icon.png')
     }).then((result) => {
       if (result.response === 0) {
         autoUpdater.quitAndInstall();
