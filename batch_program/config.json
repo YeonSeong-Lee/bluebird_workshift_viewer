@@ -1,0 +1,18 @@
+{
+    "watchPath": "/Users/yeonseong/Downloads/#33.png",
+    "uploadSettings": {
+        "folderName": "자동 업로드",
+        "retryCount": 3,
+        "retryDelay": 5000
+    },
+    "notification": {
+        "enabled": true,
+        "successMessage": "파일이 성공적으로 업로드되었습니다.",
+        "errorMessage": "파일 업로드 중 오류가 발생했습니다."
+    },
+    "logging": {
+        "enabled": true,
+        "logPath": "C:\\Users\\YourUsername\\Documents\\upload-logs",
+        "keepLogs": 30
+    }
+} 

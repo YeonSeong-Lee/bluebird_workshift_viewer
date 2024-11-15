@@ -1,5 +1,6 @@
 {
     "conventionalCommits.scopes": [
         "batch"
-    ]
+    ],
+    "workbench.colorTheme": "Default Light+"
 }
