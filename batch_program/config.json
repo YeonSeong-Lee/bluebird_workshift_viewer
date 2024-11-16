@@ -1,9 +1,10 @@
 {
-    "watchPath": "/Users/yeonseong/Downloads/#33.png",
+    "watchPath": "/Users/yeonseong/Downloads/test.xlsx",
     "uploadSettings": {
-        "folderName": "자동 업로드",
+        "folderId": "1-Fe3tn0Wz2YcyrnZCqxhJJyRjp798znT",
         "retryCount": 3,
         "retryDelay": 5000
+
     },
     "notification": {
         "enabled": true,
@@ -12,7 +13,7 @@
     },
     "logging": {
         "enabled": true,
-        "logPath": "C:\\Users\\YourUsername\\Documents\\upload-logs",
-        "keepLogs": 30
+        "logPath": "./logs",
+        "keepLogs": 7
     }
 } 

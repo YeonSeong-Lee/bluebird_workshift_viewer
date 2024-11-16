@@ -1,0 +1,28 @@
+{
+  "name": "google-drive-uploader",
+  "version": "1.0.0",
+  "bin": "autoUpload.js",
+  "pkg": {
+    "assets": [
+      "config.json",
+      "credentials.json",
+      "token.json"
+    ],
+    "targets": [
+      "node18-win-x64"
+    ]
+  },
+  "scripts": {
+    "build": "pkg .",
+    "start": "node autoUpload.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "path": "^0.12.7",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  }
+}
