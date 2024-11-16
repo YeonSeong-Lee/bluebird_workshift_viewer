@@ -4,8 +4,8 @@ echo 구글 드라이브 업로드 스크립트 시작...
 :: 스크립트가 있는 디렉토리로 이동
 cd /d %~dp0
 
-:: Node.js 스크립트 실행
-node autoUpload.js
+:: google-drive-uploader.exe 실행
+google-drive-uploader.exe
 
 :: 에러 발생 시 처리
 if errorlevel 1 (
