@@ -69,7 +69,7 @@ const initializeGoogleDrive = (serviceAccountPath) => {
 };
 
 const prepareUploadData = (watchPath, folderId) => {
-    const fileName = path.basename(watchPath);
+    const fileName = '근무표_공유용.xlsx';
     const fileMetadata = {
         name: fileName,
         parents: [folderId]
@@ -131,6 +131,7 @@ const uploadFileWithRetry = async (drive, uploadData, config, logger) => {
                     media: media,
                     fields: 'id, webViewLink'
                 });
+                response = response.data;
                 logger.info(`새 파일 '${fileName}' 생성 완료`);
             }
 
