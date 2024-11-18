@@ -5,11 +5,13 @@
   "pkg": {
     "assets": [
       "config.json",
-      "credentials.json",
-      "token.json"
+      "service-account.json"
     ],
     "targets": [
       "node18-win-x64"
+    ],
+    "options": [
+      "--no-console"
     ]
   },
   "scripts": {
