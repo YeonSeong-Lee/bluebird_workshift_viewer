@@ -19,7 +19,9 @@ export class WorkShiftController {
         this.setupEventListeners();
         try {
             await this.loadAndSetConfig();
-            await this.fetchFromGoogleDrive();
+            if (this.service.config.isOnlineMode) {
+                await this.fetchFromGoogleDrive();
+            }
             await this.fetch();
             await this.updateView(this.currentDate);
         } catch (error) {
@@ -74,6 +76,8 @@ export class WorkShiftController {
                 await this.saveTeamConfig(event);
             } else if (event.target.id === 'reset-team-config') {
                 await this.resetTeamConfig(event);
+            } else if (event.target.id === 'toggle-online-mode') {
+                await this.handleOnlineModeToggle(event);
             }
         });
 
@@ -117,6 +121,9 @@ export class WorkShiftController {
                 this.service.config.currentTabName = event.target.value;
                 localStorage.setItem('CURRENT_TEAM_FILTER', this.service.config.currentTabName);
                 await this.handleTeamFilterChange();
+            } else if (event.target.id === 'online-mode-toggle') {
+                console.log("online-mode-toggle", event.target.checked);
+                await this.handleOnlineModeToggle(event);
             }
         });
 
@@ -234,6 +241,7 @@ export class WorkShiftController {
         await window.electronAPI.set_file_path(config.excelPath);
         localStorage.setItem('MONTH_COUNT', config.monthCount);
         localStorage.setItem('TEAM_CONFIG', isEmptyString(config.teamConfig) ? this.service.config.originalTeamConfig : config.teamConfig);
+        localStorage.setItem('IS_ONLINE_MODE', config.isOnlineMode);
     }
 
     async loadAndSetConfig() {
@@ -241,7 +249,8 @@ export class WorkShiftController {
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         let teamConfig = localStorage.getItem('TEAM_CONFIG');
         const currentTabName = localStorage.getItem('CURRENT_TEAM_FILTER') || 'all';
-        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig, currentTabName });
+        const isOnlineMode = localStorage.getItem('IS_ONLINE_MODE') === 'true';
+        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig, currentTabName, isOnlineMode });
     }
 
     async saveMonthCount(event) {
@@ -301,5 +310,17 @@ export class WorkShiftController {
         await this.updateView(this.currentDate);
         this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
     };
+
+    async handleOnlineModeToggle(event) {
+        const isOnlineMode = event.target.checked;
+        try {
+            await this.setConfig({ ...this.service.config, isOnlineMode });
+            alert(`온라인 모드가 ${isOnlineMode ? '활성화' : '비활성화'}되었습니다.`);
+        } catch (error) {
+            console.error('handleOnlineModeToggle error', error);
+            event.target.checked = !isOnlineMode;
+            await this.updateErrorView(error);
+        }
+    }
 
 }

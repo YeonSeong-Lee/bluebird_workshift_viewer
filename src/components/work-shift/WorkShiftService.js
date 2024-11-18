@@ -14,6 +14,7 @@ export class WorkShiftService {
         originalTeamConfig: JSON.stringify(teamConfig),
         teamNames: getAllTeamNames(teamConfig),
         workerNames: getAllWorkerNames(teamConfig),
+        isOnlineMode: false,
     }
 
     static async fetch_xlsx() {
@@ -106,6 +107,9 @@ export class WorkShiftService {
     }
 
     static async fetchFromGoogleDrive() {
+        if (!this.config.isOnlineMode) {
+            throw new Error('온라인 모드가 비활성화되어 있습니다. 설정에서 온라인 모드를 활성화해주세요.');
+        }
         const EXCEL_FILE_PATH = await window.electronAPI.fetchGoogleDriveFilePath();
         if (!EXCEL_FILE_PATH) {
             throw new Error('구글 드라이브에서 엑셀 파일을 불러올 수 없습니다.');

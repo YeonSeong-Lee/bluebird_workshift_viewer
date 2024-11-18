@@ -157,6 +157,17 @@ export class WorkShiftView {
                                 <button id="save-month-count">저장</button>
                             </div>
                         </div>
+                        <div class="settings-item">
+                            <span>온라인 모드</span>
+                            <div class="online-mode-container">
+                                <label class="switch">
+                                    <input type="checkbox" id="online-mode-toggle" 
+                                        ${localStorage.getItem('IS_ONLINE_MODE') === 'true' ? 'checked' : ''}>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <br/>
                         <span>팀 설정</span>
                         <div class="settings-item">
                             ${(() => {
