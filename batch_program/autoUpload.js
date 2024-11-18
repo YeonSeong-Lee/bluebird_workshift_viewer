@@ -47,7 +47,7 @@ const setupLogger = (config) => {
 
 const validateWatchPath = async (watchPath, logger, errorMessage) => {
     if (!fs.existsSync(watchPath)) {
-        logger.error(errorMessage);
+        logger.error(`경로가 존재하지 않습니다. ${watchPath}`);
         return false;
     }
 
@@ -159,9 +159,9 @@ const logSuccess = (logger, config, fileName, responseData) => {
 };
 
 const uploadToGoogleDrive = async () => {
+    const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+    const logger = setupLogger(config);
     try {
-        const config = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
-        const logger = setupLogger(config);
 
         // 경로 유효성 검사
         const isValid = await validateWatchPath(
