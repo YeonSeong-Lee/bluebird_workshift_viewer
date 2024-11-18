@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   open_file_dialog: () => ipcRenderer.invoke('dialog:openFile'),
   on: (channel, callback) => ipcRenderer.on(channel, callback),
   checkUpdates: () => ipcRenderer.invoke('check-updates'),
-  onUpdateMessage: (callback) => ipcRenderer.on('update-message', (_, message) => callback(message))
+  onUpdateMessage: (callback) => ipcRenderer.on('update-message', (_, message) => callback(message)),
+  fetchGoogleDriveFilePath: () => ipcRenderer.invoke('fetch_google_drive_file_path'),
 });

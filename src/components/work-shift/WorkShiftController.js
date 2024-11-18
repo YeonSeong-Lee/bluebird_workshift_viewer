@@ -19,6 +19,7 @@ export class WorkShiftController {
         this.setupEventListeners();
         try {
             await this.loadAndSetConfig();
+            await this.fetchFromGoogleDrive();
             await this.fetch();
             await this.updateView(this.currentDate);
         } catch (error) {
@@ -221,6 +222,10 @@ export class WorkShiftController {
 
     async fetch() {
         await this.service.fetch_xlsx();
+    }
+
+    async fetchFromGoogleDrive() {
+        await this.service.fetchFromGoogleDrive();
     }
 
     async setConfig(config) {

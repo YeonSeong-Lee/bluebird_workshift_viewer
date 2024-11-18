@@ -3,6 +3,8 @@ const ExcelJS = require('exceljs');
 const path = require('node:path');
 const chokidar = require('chokidar'); // Add chokidar
 const { autoUpdater } = require('electron-updater');
+const { google } = require('googleapis');
+const fs = require('fs');
 
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -42,6 +44,63 @@ if (!gotTheLock) {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+  ipcMain.handle('fetch_google_drive_file_path', async () => {
+    try {
+      // 서비스 계정 인증 정보 읽기
+      const serviceAccountPath = path.join(__dirname, '../batch_program/service-account.json');
+
+      // 서비스 계정으로 인증
+      const auth = new google.auth.GoogleAuth({
+        keyFile: serviceAccountPath,
+        scopes: ['https://www.googleapis.com/auth/drive.file']
+      });
+
+      const drive = google.drive({ version: 'v3', auth });
+      const configPath = path.join(__dirname, '../batch_program/config.json');
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      const folderId = config.uploadSettings.folderId;
+
+      // 파일 검색 (예: 엑셀 파일)
+      const response = await drive.files.list({
+        q: `name contains '근무표' and '${folderId}' in parents and trashed=false`,
+        spaces: 'drive'
+      });
+
+
+      if (response.data.files.length === 0) {
+        throw new Error('파일을 찾을 수 없습니다.');
+      }
+
+      // 파일 다운로드
+      const dest = path.join(app.getPath('desktop'), '근무표_공유용_FROM_구글드라이브.xlsx');
+      const fileId = response.data.files[0].id;
+      const fileResponse = await drive.files.get(
+        { fileId: fileId, alt: 'media' },
+        { responseType: 'stream' }
+      );
+
+      const writer = fs.createWriteStream(dest);
+      const writePromise = new Promise((resolve, reject) => {
+        fileResponse.data
+          .on('end', () => {
+            resolve(dest);
+          })
+          .on('error', err => {
+            reject(err);
+          })
+          .pipe(writer);
+      });
+
+      await writePromise;
+      
+      return dest;
+
+    } catch (error) {
+      console.error('구글 드라이브 접근 오류:', error);
+      throw error;
+    }
+  });
 
   ipcMain.handle('fetch_xlsx', async (event, filePath, monthCount) => {
     const workbook = new ExcelJS.Workbook();

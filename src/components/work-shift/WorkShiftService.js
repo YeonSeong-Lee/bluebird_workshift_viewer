@@ -104,4 +104,12 @@ export class WorkShiftService {
             off_worker: workers.off_worker?.filter(worker => worker.team.includes(team))
         };
     }
+
+    static async fetchFromGoogleDrive() {
+        const EXCEL_FILE_PATH = await window.electronAPI.fetchGoogleDriveFilePath();
+        if (!EXCEL_FILE_PATH) {
+            throw new Error('구글 드라이브에서 엑셀 파일을 불러올 수 없습니다.');
+        }
+        this.config.excelPath = EXCEL_FILE_PATH;
+    }
 }
