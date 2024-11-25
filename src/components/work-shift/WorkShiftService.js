@@ -107,7 +107,7 @@ export class WorkShiftService {
 
     static async fetchFromGoogleDrive() {
         try {
-            await window.electronAPI.fetchGoogleDriveFilePath();
+            return await window.electronAPI.fetchGoogleDriveFilePath();
         } catch (error) {
             console.error('구글 드라이브에서 엑셀 파일을 불러올 수 없습니다.', error);
             throw error;

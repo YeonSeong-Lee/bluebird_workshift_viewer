@@ -250,13 +250,21 @@ export class WorkShiftController {
     async fetchFromGoogleDrive() {
         this.showLoading();
         try {
-            await this.service.fetchFromGoogleDrive();
-            location.reload();
+            const filePath = await this.service.fetchFromGoogleDrive();
+            if (filePath && filePath !== this.service.config.excelPath) {
+                const shouldChange = confirm('기존 파일 경로와 다릅니다. 새로운 경로로 변경하시겠습니까?');
+                if (!shouldChange) {
+                    throw new Error('파일 경로 변경 취소');
+                }
+                localStorage.setItem('EXCEL_FILE_PATH', filePath);
+                window.electronAPI.set_file_path(filePath);
+            }
         } catch (error) {
             console.error('fetchFromGoogleDrive error', error);
             await this.updateErrorView(error);
         } finally {
             this.hideLoading();
+            location.reload();
         }
     }
 
@@ -335,19 +343,4 @@ export class WorkShiftController {
         await this.updateView(this.currentDate);
         this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
     };
-
-    async handleDownloadFromDrive() {
-        try {
-            const filePath = await window.electronAPI.downloadFromGoogleDrive();
-            if (filePath) {
-                localStorage.setItem('EXCEL_FILE_PATH', filePath);
-                window.electronAPI.set_file_path(filePath);
-                alert('구글 드라이브에서 파일을 성공적으로 다운로드했습니다.');
-                location.reload();
-            }
-        } catch (error) {
-            console.error('handleDownloadFromDrive error', error);
-            alert('구글 드라이브에서 파일 다운로드 중 오류가 발생했습니다: ' + error.message);
-        }
-    }
 }
