@@ -419,25 +419,31 @@ input:checked + .slider:before {
     position: fixed;
     left: 20px;
     bottom: 20px;
-    background-color: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
-    padding: 10px 15px;
-    font-size: 14px;
+    background-color: #bfccdb;
+    color: #333;
+    border: 2px solid rgb(162, 200, 240);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(74,144,226,0.3);
     z-index: 900;
 }
 
 #download-from-drive:hover {
-    background-color: #f8f9fa;
-    border-color: #4a90e2;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    background-color: #2171c7;
+    border-color: #1a5aa0;
+    box-shadow: 0 6px 16px rgba(74,144,226,0.4);
+    transform: translateY(-2px);
+    color: white;
 }
 
 #download-from-drive:active {
-    background-color: #e9ecef;
+    background-color: #1a5aa0;
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(74,144,226,0.3);
 }
 
 /* 다운로드 버튼의 툴팁 위치 조정 */
