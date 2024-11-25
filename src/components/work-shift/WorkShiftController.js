@@ -19,9 +19,6 @@ export class WorkShiftController {
         this.setupEventListeners();
         try {
             await this.loadAndSetConfig();
-            if (this.service.config.isOnlineMode) {
-                await this.fetchFromGoogleDrive();
-            }
             await this.fetch();
             await this.updateView(this.currentDate);
         } catch (error) {
@@ -34,8 +31,18 @@ export class WorkShiftController {
 
     showLoading() {
         if (this.component.shadowRoot) {
+            const existingLoadingElement = this.component.shadowRoot.querySelector('.loading-skeleton');
+            if (existingLoadingElement) {
+                existingLoadingElement.remove();
+            }
+
             const loadingElement = this.view.renderLoading();
-            this.component.shadowRoot.appendChild(loadingElement)
+            const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
+            if (existingContainer) {
+                existingContainer.replaceWith(loadingElement);
+            } else {
+                this.component.shadowRoot.appendChild(loadingElement);
+            }
         } else {
             console.error('shadowRoot가 없습니다');
         }
@@ -48,6 +55,16 @@ export class WorkShiftController {
             loadingElement.remove();
         }
         this.isLoading = false;
+    }
+
+    setupGoogleDriveButton() {
+        const googleDriveButton = this.view.renderGoogleDriveButton();
+        const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
+        if (existingContainer) {
+            existingContainer.insertAdjacentHTML('beforeend', googleDriveButton);
+        } else {
+            this.component.shadowRoot.appendChild(googleDriveButton);
+        }
     }
 
     setupEventListeners() {
@@ -76,8 +93,8 @@ export class WorkShiftController {
                 await this.saveTeamConfig(event);
             } else if (event.target.id === 'reset-team-config') {
                 await this.resetTeamConfig(event);
-            } else if (event.target.id === 'toggle-online-mode') {
-                await this.handleOnlineModeToggle(event);
+            } else if (event.target.id === 'download-from-drive') {
+                await this.fetchFromGoogleDrive();
             }
         });
 
@@ -121,9 +138,6 @@ export class WorkShiftController {
                 this.service.config.currentTabName = event.target.value;
                 localStorage.setItem('CURRENT_TEAM_FILTER', this.service.config.currentTabName);
                 await this.handleTeamFilterChange();
-            } else if (event.target.id === 'online-mode-toggle') {
-                console.log("online-mode-toggle", event.target.checked);
-                await this.handleOnlineModeToggle(event);
             }
         });
 
@@ -186,6 +200,7 @@ export class WorkShiftController {
             } else {
                 this.component.shadowRoot.appendChild(container);
             }
+            this.setupGoogleDriveButton();
         } catch (error) {
             console.error('updateView error', error);
             await this.updateErrorView(error);
@@ -232,7 +247,16 @@ export class WorkShiftController {
     }
 
     async fetchFromGoogleDrive() {
-        await this.service.fetchFromGoogleDrive();
+        this.showLoading();
+        try {
+            await this.service.fetchFromGoogleDrive();
+            location.reload();
+        } catch (error) {
+            console.error('fetchFromGoogleDrive error', error);
+            await this.updateErrorView(error);
+        } finally {
+            this.hideLoading();
+        }
     }
 
     async setConfig(config) {
@@ -311,16 +335,18 @@ export class WorkShiftController {
         this.component.shadowRoot.querySelector('#date-input').value = this.currentDate;
     };
 
-    async handleOnlineModeToggle(event) {
-        const isOnlineMode = event.target.checked;
+    async handleDownloadFromDrive() {
         try {
-            await this.setConfig({ ...this.service.config, isOnlineMode });
-            alert(`온라인 모드가 ${isOnlineMode ? '활성화' : '비활성화'}되었습니다.`);
+            const filePath = await window.electronAPI.downloadFromGoogleDrive();
+            if (filePath) {
+                localStorage.setItem('EXCEL_FILE_PATH', filePath);
+                window.electronAPI.set_file_path(filePath);
+                alert('구글 드라이브에서 파일을 성공적으로 다운로드했습니다.');
+                location.reload();
+            }
         } catch (error) {
-            console.error('handleOnlineModeToggle error', error);
-            event.target.checked = !isOnlineMode;
-            await this.updateErrorView(error);
+            console.error('handleDownloadFromDrive error', error);
+            alert('구글 드라이브에서 파일 다운로드 중 오류가 발생했습니다: ' + error.message);
         }
     }
-
 }

@@ -157,16 +157,6 @@ export class WorkShiftView {
                                 <button id="save-month-count">저장</button>
                             </div>
                         </div>
-                        <div class="settings-item">
-                            <span>온라인 모드</span>
-                            <div class="online-mode-container">
-                                <label class="switch">
-                                    <input type="checkbox" id="online-mode-toggle" 
-                                        ${localStorage.getItem('IS_ONLINE_MODE') === 'true' ? 'checked' : ''}>
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
                         <br/>
                         <span>팀 설정</span>
                         <div class="settings-item">
@@ -186,6 +176,14 @@ export class WorkShiftView {
                     </div>
                 </div>
             </div>
+        `;
+    }
+
+    renderGoogleDriveButton() {
+        return `
+            <button id="download-from-drive" class="tooltip" tooltip="30분마다 지원팀 공용 PC에서 업로드된 근무표를 바탕화면에 다운로드합니다.">
+                엑셀 파일 다운로드
+            </button>
         `;
     }
 

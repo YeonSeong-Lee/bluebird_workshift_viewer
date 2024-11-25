@@ -387,44 +387,6 @@ tr td {
     flex: 1;
 }
 
-.online-mode-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.online-mode-toggle {
-    margin-bottom: 0;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 토글 스위치 스타일 */
-.switch {
-    position: relative;
-    display: inline-block;
-    align-items: center;
-    width: 60px;
-    height: 34px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-}
-
 .slider:before {
     position: absolute;
     content: "";
@@ -450,4 +412,36 @@ input:checked + .slider:before {
 
 .slider.round:before {
     border-radius: 50%;
+}
+
+/* Google Drive 다운로드 버튼 스타일 */
+#download-from-drive {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 900;
+}
+
+#download-from-drive:hover {
+    background-color: #f8f9fa;
+    border-color: #4a90e2;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#download-from-drive:active {
+    background-color: #e9ecef;
+}
+
+/* 다운로드 버튼의 툴팁 위치 조정 */
+#download-from-drive.tooltip::after {
+    top: -40px;
+    left: 0;
 }
