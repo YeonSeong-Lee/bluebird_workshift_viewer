@@ -163,6 +163,7 @@ export class WorkShiftController {
         } else {
             this.component.shadowRoot.appendChild(container);
         }
+        this.setupGoogleDriveButton();
     }
     
     /* @description 날짜 변경 시 호출되는 함수
