@@ -173,6 +173,15 @@ export class WorkShiftView {
                                 <button id="reset-team-config" class="settings-item-action-button">초기화</button>
                                 <button id="save-team-config" class="settings-item-action-button">저장</button>
                             </div>
+                        <br/>
+                        <div class="settings-item">
+                            <span>구글 드라이브 다운로드 보여주기</span>
+                            <label class="switch">
+                                <input type="checkbox" id="drive-button-toggle" 
+                                    ${localStorage.getItem('SHOW_DRIVE_BUTTON') !== 'false' ? 'checked' : ''}>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

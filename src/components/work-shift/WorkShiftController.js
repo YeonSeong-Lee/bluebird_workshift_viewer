@@ -62,8 +62,11 @@ export class WorkShiftController {
         const existingContainer = this.component.shadowRoot.querySelector('.work-shift');
         if (existingContainer) {
             existingContainer.insertAdjacentHTML('beforeend', googleDriveButton);
-        } else {
-            this.component.shadowRoot.appendChild(googleDriveButton);
+            const driveButton = this.component.shadowRoot.querySelector('#download-from-drive');
+            if (driveButton) {
+                driveButton.style.display = 
+                    localStorage.getItem('SHOW_DRIVE_BUTTON') !== 'false' ? 'block' : 'none';
+            }
         }
     }
 
@@ -138,6 +141,13 @@ export class WorkShiftController {
                 this.service.config.currentTabName = event.target.value;
                 localStorage.setItem('CURRENT_TEAM_FILTER', this.service.config.currentTabName);
                 await this.handleTeamFilterChange();
+            }
+            else if (event.target.id === 'drive-button-toggle') {
+                localStorage.setItem('SHOW_DRIVE_BUTTON', event.target.checked);
+                const driveButton = this.component.shadowRoot.querySelector('#download-from-drive');
+                if (driveButton) {
+                    driveButton.style.display = event.target.checked ? 'block' : 'none';
+                }
             }
         });
 
