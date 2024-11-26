@@ -284,7 +284,6 @@ export class WorkShiftController {
         await window.electronAPI.set_file_path(config.excelPath);
         localStorage.setItem('MONTH_COUNT', config.monthCount);
         localStorage.setItem('TEAM_CONFIG', isEmptyString(config.teamConfig) ? this.service.config.originalTeamConfig : config.teamConfig);
-        localStorage.setItem('IS_ONLINE_MODE', config.isOnlineMode);
     }
 
     async loadAndSetConfig() {
@@ -292,8 +291,7 @@ export class WorkShiftController {
         const monthCount = localStorage.getItem('MONTH_COUNT') || '3';
         let teamConfig = localStorage.getItem('TEAM_CONFIG');
         const currentTabName = localStorage.getItem('CURRENT_TEAM_FILTER') || 'all';
-        const isOnlineMode = localStorage.getItem('IS_ONLINE_MODE') === 'true';
-        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig, currentTabName, isOnlineMode });
+        await this.setConfig({ ...this.service.config, excelPath, monthCount, teamConfig, currentTabName });
     }
 
     async saveMonthCount(event) {
