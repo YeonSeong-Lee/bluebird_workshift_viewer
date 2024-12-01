@@ -39,6 +39,64 @@
 |:-----------:|:------:|:-----------:|
 | **Electron** <br/> <img src="https://www.electronjs.org/assets/img/logo.svg" width="50" height="50" alt="Electron Logo"> | 데스크톱 애플리케이션 프레임워크 | - 웹 기술(HTML, CSS, JS)로 크로스 플랫폼 데스크톱 앱 개발 가능<br/>- 로컬 파일 시스템 접근이 용이함<br/>- 빠른 개발과 배포가 가능함 |
 
+# 실행 흐름
+graph TD
+    A[사용자] --> B[근무표 뷰어 실행]
+    B --> C{엑셀 파일 존재?}
+    
+    C -->|Yes| D[근무표 데이터 로드]
+    C -->|No| E[설정 화면]
+    
+    D --> F[메인 화면]
+    E --> G[엑셀 파일 선택]
+    G --> D
+    
+    F --> H[날짜 선택]
+    F --> I[팀 필터링]
+    F --> J[설정 변경]
+    
+    J --> K[엑셀 파일 경로]
+    J --> L[팀 구성 설정]
+    J --> M[가져올 월 수]
+    
+    subgraph "자동 업데이트"
+        N[엑셀 파일 변경 감지]
+        O[구글 드라이브 동기화]
+        P[데이터 자동 갱신]
+    end
+    
+    N --> P
+    O --> P
+    P --> F
+
+
+# 배치 프로그램 흐름
+sequenceDiagram
+    participant B as 🤖 배치 프로그램
+    participant D as 📁 구글 드라이브
+    participant V as 🖥️ 근무표 뷰어
+
+    rect rgb(200, 220, 255)
+        Note over B,D: 자동 동기화 (30분마다)
+        loop Every 30 minutes
+            B->>B: 엑셀 파일 변경 감지
+            B->>D: 파일 업로드
+            Note over B,D: config.json 설정에 따라<br/>최대 3번 재시도
+        end
+    end
+
+    rect rgb(255, 220, 200)
+        Note over V,D: 수동 동기화 (버튼 클릭)
+        V->>D: 구글 드라이브 동기화 버튼 클릭
+        D-->>V: 최신 파일 다운로드
+        V->>V: 근무표 데이터 갱신
+        V->>V: 화면 자동 갱신
+    end
+
+# 배치 프로그램 상세
+배치 프로그램에 대한 자세한 설명은 [배치 프로그램 문서](https://github.com/YeonSeong-Lee/bluebird_workshift_viewer/tree/main/batch_program)를 참고해주세요.
+
+
 # 설치 및 실행
 1. 저장소를 클론합니다.
    ```bash
