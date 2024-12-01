@@ -40,6 +40,7 @@
 | **Electron** <br/> <img src="https://www.electronjs.org/assets/img/logo.svg" width="50" height="50" alt="Electron Logo"> | 데스크톱 애플리케이션 프레임워크 | - 웹 기술(HTML, CSS, JS)로 크로스 플랫폼 데스크톱 앱 개발 가능<br/>- 로컬 파일 시스템 접근이 용이함<br/>- 빠른 개발과 배포가 가능함 |
 
 # 실행 흐름
+```mermaid
 graph TD
     A[사용자] --> B[근무표 뷰어 실행]
     B --> C{엑셀 파일 존재?}
@@ -68,9 +69,10 @@ graph TD
     N --> P
     O --> P
     P --> F
-
+```
 
 # 배치 프로그램 흐름
+```mermaid
 sequenceDiagram
     participant B as 🤖 배치 프로그램
     participant D as 📁 구글 드라이브
@@ -92,6 +94,7 @@ sequenceDiagram
         V->>V: 근무표 데이터 갱신
         V->>V: 화면 자동 갱신
     end
+```
 
 # 배치 프로그램 상세
 배치 프로그램에 대한 자세한 설명은 [배치 프로그램 문서](https://github.com/YeonSeong-Lee/bluebird_workshift_viewer/tree/main/batch_program)를 참고해주세요.
