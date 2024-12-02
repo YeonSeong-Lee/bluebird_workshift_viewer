@@ -20,9 +20,10 @@
 
 <p align="center">
   <h1>해결책</h1>
+  <br> 
   날짜별, 팀별로 근무자를 보여주는 Viewer를 통해 쉽게 근무자 파악 할 수 있습니다.
-  <br>
-  <img src="https://github.com/user-attachments/assets/76e4c04e-10df-4262-80cb-c514a67c8789" alt="work_shift_demo">
+  <video src="https://github.com/user-attachments/assets/78590ca6-a9b7-45ac-be4b-86edf297a8bd" width="100%" controls>
+  </video>
 </p>
 
 ---
